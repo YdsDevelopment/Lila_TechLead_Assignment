@@ -10,9 +10,10 @@ import { handleReconnect } from "./handlers/reconnect.handler";
 import { handleDisconnect } from "./handlers/disconnect.handler";
 
 let io: SocketIOServer;
+let gameManager: GameManager;
 
 export function initializeSocket(httpServer: HttpServer): SocketIOServer {
-  const gameManager = new GameManager();
+  gameManager = new GameManager();
 
   io = new SocketIOServer(httpServer, {
     cors: {
@@ -40,4 +41,11 @@ export function getIO(): SocketIOServer {
     throw new Error("Socket.IO not initialized");
   }
   return io;
+}
+
+export function getGameManager(): GameManager {
+  if (!gameManager) {
+    throw new Error("GameManager not initialized");
+  }
+  return gameManager;
 }
