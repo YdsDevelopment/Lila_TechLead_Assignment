@@ -1,0 +1,1243 @@
+[
+  {
+    "order": 1,
+    "timestamp": "2026-07-21T11:51:40.134Z",
+    "type": "socket",
+    "category": "error",
+    "endpoint": "join-room",
+    "direction": "error",
+    "playerId": "",
+    "method": "",
+    "url": "",
+    "error": "Not connected",
+    "msg": "Socket not connected. Click Connect first."
+  },
+  {
+    "order": 2,
+    "timestamp": "2026-07-21T11:51:41.932Z",
+    "type": "event",
+    "category": "event",
+    "endpoint": "connect",
+    "direction": "",
+    "playerId": "",
+    "method": "",
+    "url": "",
+    "msg": "Connecting..."
+  },
+  {
+    "order": 3,
+    "timestamp": "2026-07-21T11:51:41.937Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "connect",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "socketId": "VQjvxa62-0jznsEEAAAZ"
+    },
+    "msg": "connect"
+  },
+  {
+    "order": 4,
+    "timestamp": "2026-07-21T11:51:41.937Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "connect",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "socketId": "VQjvxa62-0jznsEEAAAZ"
+    },
+    "msg": "connect"
+  },
+  {
+    "order": 5,
+    "timestamp": "2026-07-21T11:51:43.474Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "join-room",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1"
+    },
+    "msg": "join-room"
+  },
+  {
+    "order": 6,
+    "timestamp": "2026-07-21T11:51:43.475Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "join-room",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1"
+    },
+    "msg": "join-room"
+  },
+  {
+    "order": 7,
+    "timestamp": "2026-07-21T11:51:43.478Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "room-joined",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "player": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "room-joined"
+  },
+  {
+    "order": 8,
+    "timestamp": "2026-07-21T11:51:43.478Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "room-joined",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "player": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "room-joined"
+  },
+  {
+    "order": 9,
+    "timestamp": "2026-07-21T11:51:43.478Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "player-joined",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "symbol": "O",
+      "players": [
+        {
+          "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+          "symbol": "X",
+          "connected": true
+        },
+        {
+          "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+          "symbol": "O",
+          "connected": true
+        }
+      ]
+    },
+    "msg": "player-joined"
+  },
+  {
+    "order": 10,
+    "timestamp": "2026-07-21T11:51:43.478Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "player-joined",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "symbol": "O",
+      "players": [
+        {
+          "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+          "symbol": "X",
+          "connected": true
+        },
+        {
+          "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+          "symbol": "O",
+          "connected": true
+        }
+      ]
+    },
+    "msg": "player-joined"
+  },
+  {
+    "order": 11,
+    "timestamp": "2026-07-21T11:51:43.479Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "game-started",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "board": [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634733475,
+      "playerX": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "playerO": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "game-started"
+  },
+  {
+    "order": 12,
+    "timestamp": "2026-07-21T11:51:43.479Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "game-started",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "board": [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634733475,
+      "playerX": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "playerO": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "game-started"
+  },
+  {
+    "order": 13,
+    "timestamp": "2026-07-21T11:51:46.085Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 0,
+        "col": 2,
+        "timestamp": "2026-07-21T11:51:46.084Z"
+      },
+      "board": [
+        [
+          null,
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634736084,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 14,
+    "timestamp": "2026-07-21T11:51:46.085Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 0,
+        "col": 2,
+        "timestamp": "2026-07-21T11:51:46.084Z"
+      },
+      "board": [
+        [
+          null,
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634736084,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 15,
+    "timestamp": "2026-07-21T11:51:55.163Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 0,
+      "col": 0
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 16,
+    "timestamp": "2026-07-21T11:51:55.163Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 0,
+      "col": 0
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 17,
+    "timestamp": "2026-07-21T11:51:55.165Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 0,
+        "col": 0,
+        "timestamp": "2026-07-21T11:51:55.164Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634745164,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 18,
+    "timestamp": "2026-07-21T11:51:55.165Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 0,
+        "col": 0,
+        "timestamp": "2026-07-21T11:51:55.164Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634745164,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 19,
+    "timestamp": "2026-07-21T11:52:04.978Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 1,
+        "col": 1,
+        "timestamp": "2026-07-21T11:52:04.977Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634754977,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 20,
+    "timestamp": "2026-07-21T11:52:04.979Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 1,
+        "col": 1,
+        "timestamp": "2026-07-21T11:52:04.977Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634754977,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 21,
+    "timestamp": "2026-07-21T11:52:07.423Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 2,
+      "col": 0
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 22,
+    "timestamp": "2026-07-21T11:52:07.423Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 2,
+      "col": 0
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 23,
+    "timestamp": "2026-07-21T11:52:07.424Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 2,
+        "col": 0,
+        "timestamp": "2026-07-21T11:52:07.424Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          null
+        ],
+        [
+          "O",
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634757424,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 24,
+    "timestamp": "2026-07-21T11:52:07.425Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 2,
+        "col": 0,
+        "timestamp": "2026-07-21T11:52:07.424Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          null
+        ],
+        [
+          "O",
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634757424,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 25,
+    "timestamp": "2026-07-21T11:52:15.301Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 2,
+        "col": 2,
+        "timestamp": "2026-07-21T11:52:15.300Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          null
+        ],
+        [
+          "O",
+          null,
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634765300,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 26,
+    "timestamp": "2026-07-21T11:52:15.302Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 2,
+        "col": 2,
+        "timestamp": "2026-07-21T11:52:15.300Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          null
+        ],
+        [
+          "O",
+          null,
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634765300,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 27,
+    "timestamp": "2026-07-21T11:52:25.942Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 1,
+      "col": 2
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 28,
+    "timestamp": "2026-07-21T11:52:25.942Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 1,
+      "col": 2
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 29,
+    "timestamp": "2026-07-21T11:52:25.950Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 1,
+        "col": 2,
+        "timestamp": "2026-07-21T11:52:25.945Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          null,
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634775945,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 30,
+    "timestamp": "2026-07-21T11:52:25.951Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 1,
+        "col": 2,
+        "timestamp": "2026-07-21T11:52:25.945Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          null,
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634775945,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 31,
+    "timestamp": "2026-07-21T11:52:34.758Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 2,
+        "col": 1,
+        "timestamp": "2026-07-21T11:52:34.756Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          "X",
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634784756,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 32,
+    "timestamp": "2026-07-21T11:52:34.758Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 2,
+        "col": 1,
+        "timestamp": "2026-07-21T11:52:34.756Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          "X",
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784634784756,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 33,
+    "timestamp": "2026-07-21T11:52:38.744Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 0,
+      "col": 1
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 34,
+    "timestamp": "2026-07-21T11:52:38.744Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "3b4c2d9e-f889-4601-bd14-c8741c2d0062",
+      "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+      "row": 0,
+      "col": 1
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 35,
+    "timestamp": "2026-07-21T11:52:38.754Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 0,
+        "col": 1,
+        "timestamp": "2026-07-21T11:52:38.745Z"
+      },
+      "board": [
+        [
+          "O",
+          "O",
+          "X"
+        ],
+        [
+          null,
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          "X",
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634788745,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 36,
+    "timestamp": "2026-07-21T11:52:38.754Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+        "row": 0,
+        "col": 1,
+        "timestamp": "2026-07-21T11:52:38.745Z"
+      },
+      "board": [
+        [
+          "O",
+          "O",
+          "X"
+        ],
+        [
+          null,
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          "X",
+          "X"
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784634788745,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 37,
+    "timestamp": "2026-07-21T11:52:50.126Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 1,
+        "col": 0,
+        "timestamp": "2026-07-21T11:52:50.125Z"
+      },
+      "board": [
+        [
+          "O",
+          "O",
+          "X"
+        ],
+        [
+          "X",
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          "X",
+          "X"
+        ]
+      ],
+      "currentPlayer": null,
+      "turnDeadline": null,
+      "winner": null,
+      "isDraw": true
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 38,
+    "timestamp": "2026-07-21T11:52:50.126Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "c5b4ac71-68bb-4b61-b29e-4bdb4b8dbbc1",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "21206fc8-81c9-4436-b3e5-76ae4ac1ad6c",
+        "row": 1,
+        "col": 0,
+        "timestamp": "2026-07-21T11:52:50.125Z"
+      },
+      "board": [
+        [
+          "O",
+          "O",
+          "X"
+        ],
+        [
+          "X",
+          "X",
+          "O"
+        ],
+        [
+          "O",
+          "X",
+          "X"
+        ]
+      ],
+      "currentPlayer": null,
+      "turnDeadline": null,
+      "winner": null,
+      "isDraw": true
+    },
+    "msg": "move-result"
+  }
+]

@@ -9,7 +9,7 @@ export function handleCreateRoom(socket: Socket, gameManager: GameManager): void
         playerId: data.playerId,
         socketId: socket.id,
       });
-
+      console.log('Create Room is Called: And Player is Joined');
       socket.join(room.roomId);
 
       socket.emit("room-created", {

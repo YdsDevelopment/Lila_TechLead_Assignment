@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe API Tester</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    h1 { grid-column: 1 / -1; font-size: 1.3rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h1 small { font-size: 0.7rem; color: #94a3b8; font-weight: 400; }
+    h2 { font-size: 0.95rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    section { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; }
+    .full-width { grid-column: 1 / -1; }
+
+    .conn-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .conn-bar input { flex: 1; min-width: 160px; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .status-dot.connected { background: #22c55e; }
+    .status-dot.disconnected { background: #ef4444; }
+
+    input, select, button { padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 0.82rem; }
+    input:focus, select:focus { outline: 2px solid #3b82f6; border-color: transparent; }
+    button { cursor: pointer; background: #334155; transition: background 0.15s; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    button:hover { background: #475569; }
+    button:active { transform: scale(0.97); }
+    button.primary { background: #2563eb; }
+    button.primary:hover { background: #3b82f6; }
+    button.danger { background: #dc2626; }
+    button.danger:hover { background: #ef4444; }
+    button.success { background: #16a34a; }
+    button.success:hover { background: #22c55e; }
+    button.warning { background: #d97706; }
+    button.warning:hover { background: #f59e0b; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .btn-group button { font-size: 0.75rem; }
+
+    .field { margin-bottom: 6px; }
+    .field label { display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 2px; }
+    .field input, .field select { width: 100%; }
+    .row { display: flex; gap: 6px; }
+    .row > * { flex: 1; }
+
+    .log { background: #0f172a; border-radius: 6px; padding: 6px; max-height: 320px; overflow-y: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.7rem; line-height: 1.5; }
+    .log .entry { padding: 3px 0; border-bottom: 1px solid #1e293b; }
+    .log .entry:last-child { border-bottom: none; }
+    .log .tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: 600; margin-right: 4px; }
+    .tag.sent { background: #1d4ed8; color: #bfdbfe; }
+    .tag.recv { background: #15803d; color: #bbf7d0; }
+    .tag.rest { background: #6b21a8; color: #e9d5ff; }
+    .tag.event { background: #b45309; color: #fef3c7; }
+    .tag.error { background: #991b1b; color: #fecaca; }
+    .log .msg { color: #94a3b8; }
+    .log .payload { color: #a5b4fc; margin-left: 8px; white-space: pre-wrap; word-break: break-word; }
+
+    .board { display: grid; grid-template-columns: repeat(3, 54px); gap: 3px; margin: 8px 0; }
+    .board button { width: 54px; height: 54px; font-size: 1.3rem; font-weight: 700; background: #0f172a; border: 1px solid #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .board button:hover:not(:disabled) { background: #1e293b; border-color: #3b82f6; }
+    .board button:disabled { cursor: default; }
+    .board button.X { color: #60a5fa; }
+    .board button.O { color: #f472b6; }
+    .board button.win { background: #166534; border-color: #22c55e; }
+
+    .status-text { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; display: inline-block; }
+    .status-text.open { background: #1e3a5f; color: #93c5fd; }
+    .status-text.active { background: #1e3a1e; color: #86efac; }
+    .status-text.finished { background: #3b1e1e; color: #fca5a5; }
+
+    .info-grid { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 0.75rem; }
+    .info-grid .label { color: #94a3b8; }
+    .info-grid .value { color: #e2e8f0; }
+
+    .hint { font-size: 0.72rem; color: #64748b; background: #0f172a; border-radius: 6px; padding: 8px; margin-bottom: 10px; line-height: 1.5; }
+    .hint strong { color: #94a3b8; }
+
+    .save-status { font-size:0.7rem; color:#94a3b8; }
+
+    @media (max-width: 700px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>
+    Tic-Tac-Toe API Tester
+    <small>one tab = one player</small>
+    <span style="margin-left:auto;font-size:0.75rem;color:#64748b;" id="playerLabel">Player ?</span>
+  </h1>
+
+  <section class="full-width">
+    <div class="conn-bar">
+      <span class="status-dot disconnected" id="connDot"></span>
+      <span id="connStatus" style="font-size:0.82rem;">Disconnected</span>
+      <input id="serverUrl" value="http://localhost:3000" placeholder="Server URL" />
+      <button id="btnConnect" class="primary">Connect</button>
+      <button id="btnDisconnect" class="danger" disabled>Disconnect</button>
+      <button id="btnClearLog">Clear Log</button>
+      <button id="btnSaveLog" class="warning">Save Log</button>
+      <span class="save-status" id="saveStatus"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Player</h2>
+    <div class="hint">
+      <strong>How to test:</strong> Open <strong>two browser tabs</strong> to localhost:5173.<br />
+      Tab 1 → click <strong>create-room</strong> → copy the Room ID.<br />
+      Tab 2 → paste Room ID → click <strong>join-room</strong> → game starts!<br />
+      Each tab plays as its own player. Click cells or use <strong>make-move</strong>.
+    </div>
+    <div class="field">
+      <label>Player ID <span style="color:#64748b;font-weight:400;">(auto-generated, persists in this tab)</span></label>
+      <div class="row">
+        <input id="playerIdInput" placeholder="Auto-generated" />
+        <button id="btnGenPlayerId" style="flex:0">New ID</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Symbol</label>
+      <div id="playerSymbol">— (join a room to get assigned)</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>REST API</h2>
+    <div class="btn-group">
+      <button class="primary" data-rest="health">GET /health</button>
+      <button class="primary" data-rest="rooms">GET /rooms</button>
+      <button class="primary" data-rest="roomById">GET /rooms/:id</button>
+      <button class="warning" data-rest="createRoom">POST /rooms</button>
+    </div>
+    <div class="field" id="restRoomIdField" style="display:none">
+      <label>Room ID</label>
+      <input id="restRoomId" placeholder="Enter room ID" />
+    </div>
+    <div class="log" id="restLog"><div class="entry"><span class="msg">Click a REST button...</span></div></div>
+  </section>
+
+  <section>
+    <h2>Socket Events</h2>
+    <div class="btn-group">
+      <button class="success" data-socket="create-room">create-room</button>
+      <button class="success" data-socket="join-room">join-room</button>
+      <button class="primary" data-socket="make-move">make-move</button>
+      <button class="warning" data-socket="reconnect">reconnect</button>
+    </div>
+    <div class="field">
+      <label>Room ID <span style="color:#64748b;font-weight:400;">(auto-filled after create/join)</span></label>
+      <input id="socketRoomId" placeholder="Paste Room ID from other tab" />
+    </div>
+    <div class="log" id="socketLog"><div class="entry"><span class="msg">Connect then use socket events...</span></div></div>
+  </section>
+
+  <section class="full-width">
+    <h2>Game Board <span id="gameStatus"></span></h2>
+    <div style="display:flex; gap: 20px; align-items: start; flex-wrap: wrap;">
+      <div>
+        <div class="board" id="gameBoard">
+          <button data-row="0" data-col="0" disabled></button>
+          <button data-row="0" data-col="1" disabled></button>
+          <button data-row="0" data-col="2" disabled></button>
+          <button data-row="1" data-col="0" disabled></button>
+          <button data-row="1" data-col="1" disabled></button>
+          <button data-row="1" data-col="2" disabled></button>
+          <button data-row="2" data-col="0" disabled></button>
+          <button data-row="2" data-col="1" disabled></button>
+          <button data-row="2" data-col="2" disabled></button>
+        </div>
+      </div>
+      <div>
+        <div class="info-grid">
+          <span class="label">Status:</span><span class="value" id="infoStatus">-</span>
+          <span class="label">Room:</span><span class="value" id="infoRoom">-</span>
+          <span class="label">Player X:</span><span class="value" id="infoPlayerX">-</span>
+          <span class="label">Player O:</span><span class="value" id="infoPlayerO">-</span>
+          <span class="label">Current Turn:</span><span class="value" id="infoTurn">-</span>
+          <span class="label">Your Turn?</span><span class="value" id="infoYourTurn">-</span>
+          <span class="label">Winner:</span><span class="value" id="infoWinner">-</span>
+          <span class="label">Last Move:</span><span class="value" id="infoLastMove">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-width">
+    <h2>Event Log</h2>
+    <div class="log" id="eventLog" style="max-height: 240px;"><div class="entry"><span class="msg">Waiting for events...</span></div></div>
+  </section>
+</div>
+
+<script type="module">
+import { io } from "socket.io-client";
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+const STORAGE_KEY = "tictactoe_playerId";
+
+const state = {
+  socket: null,
+  playerId: localStorage.getItem(STORAGE_KEY) || crypto.randomUUID(),
+  symbol: null,
+  currentRoomId: "",
+  board: Array(9).fill(null),
+  gameActive: false,
+  eventLogEntries: [],
+};
+
+function ts() { return new Date().toISOString(); }
+
+function capture(entry) {
+  entry.timestamp = entry.timestamp || ts();
+  state.eventLogEntries.push(entry);
+}
+
+// --- DOM refs ---
+const connDot = $("#connDot");
+const connStatus = $("#connStatus");
+const serverUrl = $("#serverUrl");
+const btnConnect = $("#btnConnect");
+const btnDisconnect = $("#btnDisconnect");
+const btnClearLog = $("#btnClearLog");
+const playerIdInput = $("#playerIdInput");
+const btnGenPlayerId = $("#btnGenPlayerId");
+const playerSymbol = $("#playerSymbol");
+const playerLabel = $("#playerLabel");
+const restLog = $("#restLog");
+const socketLog = $("#socketLog");
+const eventLog = $("#eventLog");
+const restRoomId = $("#restRoomId");
+const restRoomIdField = $("#restRoomIdField");
+const socketRoomId = $("#socketRoomId");
+const boardEl = $("#gameBoard");
+const infoStatus = $("#infoStatus");
+const infoRoom = $("#infoRoom");
+const infoPlayerX = $("#infoPlayerX");
+const infoPlayerO = $("#infoPlayerO");
+const infoTurn = $("#infoTurn");
+const infoYourTurn = $("#infoYourTurn");
+const infoWinner = $("#infoWinner");
+const infoLastMove = $("#infoLastMove");
+const gameStatus = $("#gameStatus");
+
+playerIdInput.value = state.playerId;
+updatePlayerLabel();
+
+function updatePlayerLabel() {
+  const short = state.playerId.slice(0, 8);
+  playerLabel.textContent = `ID: ${short}...`;
+}
+
+// --- Logging ---
+function log(el, tag, msg, payload, extra) {
+  const div = document.createElement("div");
+  div.className = "entry";
+  const tagSpan = document.createElement("span");
+  tagSpan.className = "tag " + tag;
+  tagSpan.textContent = tag.toUpperCase();
+  div.appendChild(tagSpan);
+  const msgSpan = document.createElement("span");
+  msgSpan.className = "msg";
+  msgSpan.textContent = msg;
+  div.appendChild(msgSpan);
+  if (payload !== undefined) {
+    const pre = document.createElement("div");
+    pre.className = "payload";
+    pre.textContent = typeof payload === "string" ? payload : JSON.stringify(payload, null, 2);
+    div.appendChild(pre);
+  }
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  capture({ tag, msg, payload, ...(extra || {}) });
+}
+
+function clearLog(el) { el.innerHTML = ""; }
+
+function updateConnUI(connected) {
+  connDot.className = "status-dot " + (connected ? "connected" : "disconnected");
+  connStatus.textContent = connected ? "Connected" : "Disconnected";
+  btnConnect.disabled = connected;
+  btnDisconnect.disabled = !connected;
+}
+
+function updateBoardVisual(data) {
+  if (!data || !data.board) return;
+  const b = data.board.flat();
+  state.board = b;
+  const cells = boardEl.querySelectorAll("button");
+  cells.forEach((btn, i) => {
+    btn.textContent = b[i] || "";
+    btn.className = b[i] || "";
+    btn.disabled = !state.gameActive;
+  });
+  if (data.winner) {
+    gameStatus.textContent = "Winner: " + data.winner.playerId.slice(0, 8) + "... (" + data.winner.symbol + ")";
+    gameStatus.className = "status-text finished";
+    state.gameActive = false;
+  } else if (data.isDraw) {
+    gameStatus.textContent = "Draw!";
+    gameStatus.className = "status-text finished";
+    state.gameActive = false;
+  } else if (data.currentPlayer) {
+    gameStatus.textContent = (data.currentPlayer.playerId === state.playerId ? "Your turn" : "Opponent's turn") + " (" + data.currentPlayer.symbol + ")";
+    gameStatus.className = "status-text active";
+  }
+  infoStatus.textContent = data.gameStatus || (data.currentPlayer ? "ACTIVE" : "OPEN");
+  infoPlayerX.textContent = data.playerX?.playerId ? data.playerX.playerId.slice(0, 8) + "..." : "-";
+  infoPlayerO.textContent = data.playerO?.playerId ? data.playerO.playerId.slice(0, 8) + "..." : "-";
+  infoTurn.textContent = data.currentPlayer ? data.currentPlayer.playerId.slice(0, 8) + "..." : "-";
+  infoYourTurn.textContent = data.currentPlayer?.playerId === state.playerId ? "YES" : (data.currentPlayer ? "no" : "-");
+  infoWinner.textContent = data.winner ? data.winner.playerId.slice(0, 8) + "... (" + data.winner.symbol + ")" : "-";
+  if (data.move) infoLastMove.textContent = `[${data.move.row},${data.move.col}] by ${data.move.playerId.slice(0, 8)}...`;
+}
+
+function resetGameBoard() {
+  state.board = Array(9).fill(null);
+  state.gameActive = false;
+  state.symbol = null;
+  boardEl.querySelectorAll("button").forEach(b => { b.textContent = ""; b.className = ""; b.disabled = true; });
+  gameStatus.textContent = "";
+  gameStatus.className = "";
+  playerSymbol.textContent = "— (join a room to get assigned)";
+  infoStatus.textContent = "-";
+  infoRoom.textContent = "-";
+  infoPlayerX.textContent = "-";
+  infoPlayerO.textContent = "-";
+  infoTurn.textContent = "-";
+  infoYourTurn.textContent = "-";
+  infoWinner.textContent = "-";
+  infoLastMove.textContent = "-";
+}
+
+// --- Socket ---
+function connectSocket() {
+  if (state.socket?.connected) state.socket.disconnect();
+
+  const url = serverUrl.value.trim() || "http://localhost:3000";
+  const sock = io(url, {
+    transports: ["websocket", "polling"],
+    autoConnect: true,
+    forceNew: true,
+  });
+
+  function sockLog(tag, eventName, data) {
+    log(eventLog, tag, eventName, data, {
+      type: "socket", event: eventName, direction: tag, playerId: state.playerId, payload: data,
+    });
+    log(socketLog, tag, eventName, data, {
+      type: "socket", event: eventName, direction: tag, playerId: state.playerId, payload: data,
+    });
+  }
+
+  sock.on("connect", () => {
+    sockLog("recv", "connect", { socketId: sock.id });
+    updateConnUI(true);
+  });
+
+  sock.on("disconnect", (reason) => {
+    sockLog("recv", "disconnect", { reason });
+    updateConnUI(false);
+  });
+
+  sock.on("room-created", (data) => {
+    sockLog("recv", "room-created", data);
+    state.currentRoomId = data.roomId;
+    socketRoomId.value = data.roomId;
+    restRoomId.value = data.roomId;
+    infoRoom.textContent = data.roomId.slice(0, 8) + "...";
+    state.symbol = data.player.symbol;
+    playerSymbol.textContent = state.symbol;
+  });
+
+  sock.on("room-joined", (data) => {
+    sockLog("recv", "room-joined", data);
+    state.currentRoomId = data.roomId;
+    socketRoomId.value = data.roomId;
+    restRoomId.value = data.roomId;
+    infoRoom.textContent = data.roomId.slice(0, 8) + "...";
+    state.symbol = data.player.symbol;
+    playerSymbol.textContent = state.symbol;
+  });
+
+  sock.on("player-joined", (data) => {
+    sockLog("recv", "player-joined", data);
+  });
+
+  sock.on("game-started", (data) => {
+    sockLog("recv", "game-started", data);
+    state.gameActive = true;
+    updateBoardVisual({ ...data, gameStatus: "ACTIVE" });
+  });
+
+  sock.on("move-result", (data) => {
+    sockLog("recv", "move-result", data);
+    if (data.board) {
+      updateBoardVisual({ ...data, gameStatus: data.winner ? "FINISHED" : data.currentPlayer ? "ACTIVE" : "OPEN" });
+    }
+    if (!data.success) {
+      sockLog("error", "move-result", { error: data.error });
+    }
+  });
+
+  sock.on("player-disconnected", (data) => {
+    sockLog("recv", "player-disconnected", data);
+  });
+
+  sock.on("player-reconnected", (data) => {
+    sockLog("recv", "player-reconnected", data);
+  });
+
+  sock.on("room-state", (data) => {
+    sockLog("recv", "room-state", data);
+    state.gameActive = data.status === "ACTIVE";
+    updateBoardVisual({
+      board: data.board,
+      currentPlayer: data.currentPlayer,
+      winner: data.winner,
+      isDraw: data.isDraw,
+      playerX: data.players?.[0],
+      playerO: data.players?.[1],
+      gameStatus: data.status,
+    });
+    state.currentRoomId = data.roomId;
+    socketRoomId.value = data.roomId;
+    restRoomId.value = data.roomId;
+    infoRoom.textContent = data.roomId.slice(0, 8) + "...";
+    const me = data.players?.find(p => p.playerId === state.playerId);
+    if (me) { state.symbol = me.symbol; playerSymbol.textContent = me.symbol; }
+  });
+
+  sock.on("error", (data) => {
+    sockLog("error", "error", data);
+  });
+
+  sock.on("connect_error", (err) => {
+    sockLog("error", "connect_error", { message: err.message });
+  });
+
+  state.socket = sock;
+  log(eventLog, "event", "Connecting...", undefined, { type: "event", event: "connect" });
+}
+
+function disconnectSocket() {
+  if (state.socket) { state.socket.disconnect(); state.socket = null; }
+  updateConnUI(false);
+  resetGameBoard();
+  log(eventLog, "event", "Disconnected", undefined, { type: "event", event: "disconnect" });
+}
+
+// --- REST calls ---
+async function callRest(endpoint) {
+  const base = serverUrl.value.trim() || "http://localhost:3000";
+  let url = "";
+  let method = "GET";
+  let requestBody = undefined;
+  switch (endpoint) {
+    case "health":    url = base + "/health"; break;
+    case "rooms":     url = base + "/rooms"; break;
+    case "roomById":  url = base + "/rooms/" + restRoomId.value; break;
+    case "createRoom": url = base + "/rooms"; method = "POST"; requestBody = {}; break;
+  }
+  const label = `${method} ${url.replace(base, "")}`;
+  try {
+    const opts = { method };
+    if (requestBody !== undefined) {
+      opts.headers = { "Content-Type": "application/json" };
+      opts.body = JSON.stringify(requestBody);
+    }
+    const startTime = ts();
+    const res = await fetch(url, opts);
+    const data = await res.json();
+    log(restLog, "rest", `${label} → ${res.status}`, data, {
+      endpoint: label, type: "rest", method, url, requestBody, responseStatus: res.status, responseBody: data, startTime, endTime: ts(),
+    });
+    return data;
+  } catch (err) {
+    log(restLog, "error", `${label} → Error: ${err.message}`, undefined, {
+      endpoint: label, type: "rest", method, url, requestBody, error: err.message,
+    });
+  }
+}
+
+// --- Emit socket event ---
+function emitEvent(ep, payload) {
+  if (!state.socket?.connected) {
+    log(socketLog, "error", "Socket not connected. Click Connect first.", undefined, {
+      type: "socket", event: ep, direction: "error", error: "Not connected",
+    });
+    return false;
+  }
+  const extra = { type: "socket", event: ep, direction: "sent", playerId: state.playerId, payload };
+  log(socketLog, "sent", ep, payload, extra);
+  log(eventLog, "sent", ep, payload, extra);
+  state.socket.emit(ep, payload);
+  return true;
+}
+
+// --- Event Handlers ---
+
+btnConnect.addEventListener("click", connectSocket);
+btnDisconnect.addEventListener("click", disconnectSocket);
+btnClearLog.addEventListener("click", () => {
+  clearLog(restLog); clearLog(socketLog); clearLog(eventLog);
+  state.eventLogEntries = [];
+  $("#saveStatus").textContent = "";
+});
+
+btnGenPlayerId.addEventListener("click", () => {
+  state.playerId = crypto.randomUUID();
+  localStorage.setItem(STORAGE_KEY, state.playerId);
+  playerIdInput.value = state.playerId;
+  updatePlayerLabel();
+});
+
+playerIdInput.addEventListener("input", () => {
+  state.playerId = playerIdInput.value.trim();
+  localStorage.setItem(STORAGE_KEY, state.playerId);
+  updatePlayerLabel();
+});
+
+// REST buttons
+$$("[data-rest]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const ep = btn.dataset.rest;
+    if (ep === "roomById") {
+      restRoomIdField.style.display = "block";
+      if (restRoomId.value) callRest(ep);
+      else restRoomId.focus();
+      return;
+    }
+    restRoomIdField.style.display = ep === "roomById" ? "block" : "none";
+    callRest(ep);
+  });
+});
+restRoomId.addEventListener("keydown", (e) => { if (e.key === "Enter") callRest("roomById"); });
+
+// Socket buttons
+$$("[data-socket]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const ep = btn.dataset.socket;
+    const roomId = socketRoomId.value.trim();
+    let payload;
+    switch (ep) {
+      case "create-room":
+        payload = { playerId: state.playerId };
+        break;
+      case "join-room":
+        if (!roomId) { log(socketLog, "error", "Enter a Room ID"); return; }
+        payload = { roomId, playerId: state.playerId };
+        break;
+      case "make-move":
+        if (!roomId) { log(socketLog, "error", "Enter a Room ID"); return; }
+        if (!state.gameActive) { log(socketLog, "error", "No active game."); return; }
+        { const idx = state.board.indexOf(null);
+          if (idx === -1) { log(socketLog, "error", "Board full"); return; }
+          payload = { roomId, playerId: state.playerId, row: Math.floor(idx / 3), col: idx % 3 };
+        }
+        break;
+      case "reconnect":
+        payload = { playerId: state.playerId };
+        break;
+    }
+    if (payload) emitEvent(ep, payload);
+  });
+});
+
+// Board clicks
+boardEl.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (!state.gameActive) return;
+    const row = parseInt(btn.dataset.row);
+    const col = parseInt(btn.dataset.col);
+    if (state.board[row * 3 + col] !== null) return;
+    const roomId = socketRoomId.value.trim();
+    if (!roomId) return;
+    emitEvent("make-move", { roomId, playerId: state.playerId, row, col });
+  });
+});
+
+// --- Save Log ---
+async function saveEventLog() {
+  const entries = state.eventLogEntries;
+  if (entries.length === 0) { $("#saveStatus").textContent = "No events."; return; }
+  const now = new Date();
+  const label = `session_${now.toISOString().replace(/[:.]/g, "-").slice(0, 19)}`;
+  const ordered = entries.map((e, i) => ({
+    order: i + 1, timestamp: e.timestamp || e.startTime || "",
+    type: e.type || "", category: e.tag || "",
+    endpoint: e.endpoint || e.event || "",
+    direction: e.direction || "",
+    playerId: e.playerId || "",
+    method: e.method || "", url: e.url || "",
+    requestBody: e.requestBody, responseStatus: e.responseStatus, responseBody: e.responseBody,
+    eventPayload: e.payload, error: e.error, msg: e.msg || "",
+  }));
+  const json = JSON.stringify(ordered, null, 2);
+  const md = [
+    `# Event Log - ${label}`,
+    `**Generated:** ${now.toISOString()}`,
+    `**Total Calls:** ${ordered.length}`,
+    "", "---", "## Calls (in order)", "",
+    ...ordered.flatMap(e => [
+      `### #${e.order} - ${e.timestamp}`,
+      `- **Type:** ${e.category}${e.endpoint ? ` — \`${e.endpoint}\`` : ""}`,
+      e.direction ? `- **Direction:** ${e.direction}` : "",
+      e.playerId ? `- **Player ID:** ${e.playerId.slice(0, 8)}...` : "",
+      e.method ? `- **Method:** ${e.method}` : "",
+      e.url ? `- **URL:** ${e.url}` : "",
+      e.responseStatus ? `- **Status:** ${e.responseStatus}` : "",
+      e.requestBody !== undefined ? "- **Request Body:**\n```json\n" + JSON.stringify(e.requestBody, null, 2) + "\n```" : "",
+      e.responseBody !== undefined ? "- **Response Body:**\n```json\n" + JSON.stringify(e.responseBody, null, 2) + "\n```" : "",
+      e.eventPayload !== undefined ? "- **Payload:**\n```json\n" + JSON.stringify(e.eventPayload, null, 2) + "\n```" : "",
+      e.error ? `- **Error:** ${e.error}` : "",
+      e.msg ? `- **Message:** ${e.msg}` : "",
+      "",
+    ]),
+  ].join("\n");
+  try {
+    const r = await fetch("/save-log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filename: `${label}.json`, content: json }),
+    });
+    const result = await r.json();
+    if (result.ok) {
+      $("#saveStatus").textContent = `Saved: ${label}.json`;
+      await fetch("/save-log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: `${label}.md`, content: md }),
+      });
+    } else {
+      $("#saveStatus").textContent = "Save failed";
+      downloadLog(json, `${label}.json`);
+    }
+  } catch {
+    $("#saveStatus").textContent = "Downloading instead.";
+    downloadLog(json, `${label}.json`);
+  }
+}
+function downloadLog(content, filename) {
+  const blob = new Blob([content], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+$("#btnSaveLog").addEventListener("click", saveEventLog);
+
+// Init
+resetGameBoard();
+</script>
+</body>
+</html>

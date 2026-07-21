@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe API Tester</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    h1 { grid-column: 1 / -1; font-size: 1.3rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h1 small { font-size: 0.7rem; color: #94a3b8; font-weight: 400; }
+    h2 { font-size: 0.95rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    section { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; }
+    .full-width { grid-column: 1 / -1; }
+
+    .conn-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .conn-bar input { flex: 1; min-width: 160px; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .status-dot.connected { background: #22c55e; }
+    .status-dot.disconnected { background: #ef4444; }
+
+    input, select, button { padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 0.82rem; }
+    input:focus, select:focus { outline: 2px solid #3b82f6; border-color: transparent; }
+    button { cursor: pointer; background: #334155; transition: background 0.15s; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    button:hover { background: #475569; }
+    button:active { transform: scale(0.97); }
+    button.primary { background: #2563eb; }
+    button.primary:hover { background: #3b82f6; }
+    button.danger { background: #dc2626; }
+    button.danger:hover { background: #ef4444; }
+    button.success { background: #16a34a; }
+    button.success:hover { background: #22c55e; }
+    button.warning { background: #d97706; }
+    button.warning:hover { background: #f59e0b; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .btn-group button { font-size: 0.75rem; }
+
+    .field { margin-bottom: 6px; }
+    .field label { display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 2px; }
+    .field input, .field select { width: 100%; }
+    .row { display: flex; gap: 6px; }
+    .row > * { flex: 1; }
+
+    .log { background: #0f172a; border-radius: 6px; padding: 6px; max-height: 320px; overflow-y: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.7rem; line-height: 1.5; }
+    .log .entry { padding: 3px 0; border-bottom: 1px solid #1e293b; }
+    .log .entry:last-child { border-bottom: none; }
+    .log .tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: 600; margin-right: 4px; }
+    .tag.sent { background: #1d4ed8; color: #bfdbfe; }
+    .tag.recv { background: #15803d; color: #bbf7d0; }
+    .tag.rest { background: #6b21a8; color: #e9d5ff; }
+    .tag.event { background: #b45309; color: #fef3c7; }
+    .tag.error { background: #991b1b; color: #fecaca; }
+    .log .msg { color: #94a3b8; }
+    .log .payload { color: #a5b4fc; margin-left: 8px; white-space: pre-wrap; word-break: break-word; }
+
+    .board { display: grid; grid-template-columns: repeat(3, 54px); gap: 3px; margin: 8px 0; }
+    .board button { width: 54px; height: 54px; font-size: 1.3rem; font-weight: 700; background: #0f172a; border: 1px solid #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .board button:hover:not(:disabled) { background: #1e293b; border-color: #3b82f6; }
+    .board button:disabled { cursor: default; }
+    .board button.X { color: #60a5fa; }
+    .board button.O { color: #f472b6; }
+    .board button.win { background: #166534; border-color: #22c55e; }
+
+    .status-text { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; display: inline-block; }
+    .status-text.open { background: #1e3a5f; color: #93c5fd; }
+    .status-text.active { background: #1e3a1e; color: #86efac; }
+    .status-text.finished { background: #3b1e1e; color: #fca5a5; }
+
+    .info-grid { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 0.75rem; }
+    .info-grid .label { color: #94a3b8; }
+    .info-grid .value { color: #e2e8f0; }
+
+    .hint { font-size: 0.72rem; color: #64748b; background: #0f172a; border-radius: 6px; padding: 8px; margin-bottom: 10px; line-height: 1.5; }
+    .hint strong { color: #94a3b8; }
+
+    .save-status { font-size:0.7rem; color:#94a3b8; }
+
+    @media (max-width: 700px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-BtGVtiEI.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1>
+    Tic-Tac-Toe API Tester
+    <small>one tab = one player</small>
+    <span style="margin-left:auto;font-size:0.75rem;color:#64748b;" id="playerLabel">Player ?</span>
+  </h1>
+
+  <section class="full-width">
+    <div class="conn-bar">
+      <span class="status-dot disconnected" id="connDot"></span>
+      <span id="connStatus" style="font-size:0.82rem;">Disconnected</span>
+      <input id="serverUrl" value="http://localhost:3000" placeholder="Server URL" />
+      <button id="btnConnect" class="primary">Connect</button>
+      <button id="btnDisconnect" class="danger" disabled>Disconnect</button>
+      <button id="btnClearLog">Clear Log</button>
+      <button id="btnSaveLog" class="warning">Save Log</button>
+      <span class="save-status" id="saveStatus"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Player</h2>
+    <div class="hint">
+      <strong>How to test:</strong> Open <strong>two browser tabs</strong> to localhost:5173.<br />
+      Tab 1 → click <strong>create-room</strong> → copy the Room ID.<br />
+      Tab 2 → paste Room ID → click <strong>join-room</strong> → game starts!<br />
+      Each tab plays as its own player. Click cells or use <strong>make-move</strong>.
+    </div>
+    <div class="field">
+      <label>Player ID <span style="color:#64748b;font-weight:400;">(auto-generated, persists in this tab)</span></label>
+      <div class="row">
+        <input id="playerIdInput" placeholder="Auto-generated" />
+        <button id="btnGenPlayerId" style="flex:0">New ID</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Symbol</label>
+      <div id="playerSymbol">— (join a room to get assigned)</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>REST API</h2>
+    <div class="btn-group">
+      <button class="primary" data-rest="health">GET /health</button>
+      <button class="primary" data-rest="rooms">GET /rooms</button>
+      <button class="primary" data-rest="roomById">GET /rooms/:id</button>
+      <button class="warning" data-rest="createRoom">POST /rooms</button>
+    </div>
+    <div class="field" id="restRoomIdField" style="display:none">
+      <label>Room ID</label>
+      <input id="restRoomId" placeholder="Enter room ID" />
+    </div>
+    <div class="log" id="restLog"><div class="entry"><span class="msg">Click a REST button...</span></div></div>
+  </section>
+
+  <section>
+    <h2>Socket Events</h2>
+    <div class="btn-group">
+      <button class="success" data-socket="create-room">create-room</button>
+      <button class="success" data-socket="join-room">join-room</button>
+      <button class="primary" data-socket="make-move">make-move</button>
+      <button class="warning" data-socket="reconnect">reconnect</button>
+    </div>
+    <div class="field">
+      <label>Room ID <span style="color:#64748b;font-weight:400;">(auto-filled after create/join)</span></label>
+      <input id="socketRoomId" placeholder="Paste Room ID from other tab" />
+    </div>
+    <div class="log" id="socketLog"><div class="entry"><span class="msg">Connect then use socket events...</span></div></div>
+  </section>
+
+  <section class="full-width">
+    <h2>Game Board <span id="gameStatus"></span></h2>
+    <div style="display:flex; gap: 20px; align-items: start; flex-wrap: wrap;">
+      <div>
+        <div class="board" id="gameBoard">
+          <button data-row="0" data-col="0" disabled></button>
+          <button data-row="0" data-col="1" disabled></button>
+          <button data-row="0" data-col="2" disabled></button>
+          <button data-row="1" data-col="0" disabled></button>
+          <button data-row="1" data-col="1" disabled></button>
+          <button data-row="1" data-col="2" disabled></button>
+          <button data-row="2" data-col="0" disabled></button>
+          <button data-row="2" data-col="1" disabled></button>
+          <button data-row="2" data-col="2" disabled></button>
+        </div>
+      </div>
+      <div>
+        <div class="info-grid">
+          <span class="label">Status:</span><span class="value" id="infoStatus">-</span>
+          <span class="label">Room:</span><span class="value" id="infoRoom">-</span>
+          <span class="label">Player X:</span><span class="value" id="infoPlayerX">-</span>
+          <span class="label">Player O:</span><span class="value" id="infoPlayerO">-</span>
+          <span class="label">Current Turn:</span><span class="value" id="infoTurn">-</span>
+          <span class="label">Your Turn?</span><span class="value" id="infoYourTurn">-</span>
+          <span class="label">Winner:</span><span class="value" id="infoWinner">-</span>
+          <span class="label">Last Move:</span><span class="value" id="infoLastMove">-</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="full-width">
+    <h2>Event Log</h2>
+    <div class="log" id="eventLog" style="max-height: 240px;"><div class="entry"><span class="msg">Waiting for events...</span></div></div>
+  </section>
+</div>
+
+</body>
+</html>
