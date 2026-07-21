@@ -1,5 +1,6 @@
 import { Socket, Server as SocketIOServer } from "socket.io";
 import { GameManager } from "../../game/GameManager";
+import { scheduleTurnTimeout } from "../socket";
 import { logger } from "../../utils/Logger";
 
 export function handleJoinRoom(
@@ -61,6 +62,13 @@ export function handleJoinRoom(
             connected: room.players[1].connected,
           },
         });
+
+        if (game.isTurnTimeoutEnabled() && turnDeadline) {
+          const delay = turnDeadline - Date.now();
+          if (delay > 0) {
+            scheduleTurnTimeout(room.roomId, delay);
+          }
+        }
 
         logger.info(`Game started in room ${room.roomId}`);
       }

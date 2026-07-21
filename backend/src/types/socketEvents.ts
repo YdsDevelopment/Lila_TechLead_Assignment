@@ -11,6 +11,7 @@ export const SocketEvents = {
   PLAYER_DISCONNECTED: "player-disconnected",
   PLAYER_RECONNECTED: "player-reconnected",
   ROOM_STATE: "room-state",
+  TURN_TIMER: "turn-timer",
   ERROR: "error",
 } as const;
 

@@ -73,6 +73,13 @@
     .info-grid .label { color: #94a3b8; }
     .info-grid .value { color: #e2e8f0; }
 
+    .timer-bar { height: 4px; background: #334155; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+    .timer-bar .fill { height: 100%; border-radius: 2px; transition: width 1s linear, background 0.3s; background: #22c55e; width: 100%; }
+    .timer-bar .fill.warning { background: #f59e0b; }
+    .timer-bar .fill.danger { background: #ef4444; animation: pulse 0.5s ease-in-out infinite alternate; }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+    .turn-timer { display: flex; align-items: center; gap: 6px; }
+
     .hint { font-size: 0.72rem; color: #64748b; background: #0f172a; border-radius: 6px; padding: 8px; margin-bottom: 10px; line-height: 1.5; }
     .hint strong { color: #94a3b8; }
 
@@ -180,8 +187,12 @@
           <span class="label">Player O:</span><span class="value" id="infoPlayerO">-</span>
           <span class="label">Current Turn:</span><span class="value" id="infoTurn">-</span>
           <span class="label">Your Turn?</span><span class="value" id="infoYourTurn">-</span>
+          <span class="label">Turn Timer:</span><span class="value" id="infoTurnTimer" style="font-variant-numeric: tabular-nums;">-</span>
           <span class="label">Winner:</span><span class="value" id="infoWinner">-</span>
           <span class="label">Last Move:</span><span class="value" id="infoLastMove">-</span>
+        </div>
+        <div class="timer-bar" id="turnTimerBar" style="display:none;">
+          <div class="fill" id="turnTimerFill"></div>
         </div>
       </div>
     </div>
@@ -209,6 +220,7 @@ const state = {
   board: Array(9).fill(null),
   gameActive: false,
   eventLogEntries: [],
+  turnDeadline: null,
 };
 
 function ts() { return new Date().toISOString(); }
@@ -242,6 +254,9 @@ const infoPlayerX = $("#infoPlayerX");
 const infoPlayerO = $("#infoPlayerO");
 const infoTurn = $("#infoTurn");
 const infoYourTurn = $("#infoYourTurn");
+const infoTurnTimer = $("#infoTurnTimer");
+const turnTimerBar = $("#turnTimerBar");
+const turnTimerFill = $("#turnTimerFill");
 const infoWinner = $("#infoWinner");
 const infoLastMove = $("#infoLastMove");
 const gameStatus = $("#gameStatus");
@@ -308,6 +323,10 @@ function updateBoardVisual(data) {
     gameStatus.textContent = (data.currentPlayer.playerId === state.playerId ? "Your turn" : "Opponent's turn") + " (" + data.currentPlayer.symbol + ")";
     gameStatus.className = "status-text active";
   }
+  if (data.timeoutWin) {
+    gameStatus.textContent = "Opponent timed out — " + (data.winner?.playerId === state.playerId ? "You win!" : "You lost");
+    gameStatus.className = "status-text finished";
+  }
   infoStatus.textContent = data.gameStatus || (data.currentPlayer ? "ACTIVE" : "OPEN");
   infoPlayerX.textContent = data.playerX?.playerId ? data.playerX.playerId.slice(0, 8) + "..." : "-";
   infoPlayerO.textContent = data.playerO?.playerId ? data.playerO.playerId.slice(0, 8) + "..." : "-";
@@ -315,12 +334,41 @@ function updateBoardVisual(data) {
   infoYourTurn.textContent = data.currentPlayer?.playerId === state.playerId ? "YES" : (data.currentPlayer ? "no" : "-");
   infoWinner.textContent = data.winner ? data.winner.playerId.slice(0, 8) + "... (" + data.winner.symbol + ")" : "-";
   if (data.move) infoLastMove.textContent = `[${data.move.row},${data.move.col}] by ${data.move.playerId.slice(0, 8)}...`;
+  resetTurnTimer(data);
+}
+
+function updateTimerDisplay(remainingMs) {
+  if (!state.gameActive) {
+    hideTimerDisplay();
+    return;
+  }
+  const total = state.turnDeadline ? state.turnDeadline - Date.now() + remainingMs : remainingMs;
+  const pct = total > 0 ? (remainingMs / total) * 100 : 0;
+  infoTurnTimer.textContent = (remainingMs / 1000).toFixed(1) + "s";
+  turnTimerFill.style.width = Math.max(0, pct) + "%";
+  turnTimerFill.className = "fill" + (pct < 20 ? " danger" : pct < 40 ? " warning" : "");
+  turnTimerBar.style.display = "block";
+}
+
+function hideTimerDisplay() {
+  state.turnDeadline = null;
+  infoTurnTimer.textContent = "-";
+  turnTimerBar.style.display = "none";
+}
+
+function resetTurnTimer(data) {
+  if (data.turnDeadline && data.currentPlayer && state.gameActive) {
+    state.turnDeadline = data.turnDeadline;
+  } else {
+    hideTimerDisplay();
+  }
 }
 
 function resetGameBoard() {
   state.board = Array(9).fill(null);
   state.gameActive = false;
   state.symbol = null;
+  hideTimerDisplay();
   boardEl.querySelectorAll("button").forEach(b => { b.textContent = ""; b.className = ""; b.disabled = true; });
   gameStatus.textContent = "";
   gameStatus.className = "";
@@ -331,6 +379,8 @@ function resetGameBoard() {
   infoPlayerO.textContent = "-";
   infoTurn.textContent = "-";
   infoYourTurn.textContent = "-";
+  infoTurnTimer.textContent = "-";
+  turnTimerBar.style.display = "none";
   infoWinner.textContent = "-";
   infoLastMove.textContent = "-";
 }
@@ -392,16 +442,31 @@ function connectSocket() {
   sock.on("game-started", (data) => {
     sockLog("recv", "game-started", data);
     state.gameActive = true;
-    updateBoardVisual({ ...data, gameStatus: "ACTIVE" });
+    updateBoardVisual({ ...data, gameStatus: "ACTIVE", turnDeadline: data.turnDeadline });
   });
 
   sock.on("move-result", (data) => {
     sockLog("recv", "move-result", data);
     if (data.board) {
-      updateBoardVisual({ ...data, gameStatus: data.winner ? "FINISHED" : data.currentPlayer ? "ACTIVE" : "OPEN" });
+      const gameOver = data.winner || data.isDraw;
+      if (gameOver) {
+        state.gameActive = false;
+        hideTimerDisplay();
+      }
+      updateBoardVisual({
+        ...data,
+        gameStatus: data.winner ? "FINISHED" : data.currentPlayer ? "ACTIVE" : "OPEN",
+        turnDeadline: data.turnDeadline,
+      });
     }
     if (!data.success) {
       sockLog("error", "move-result", { error: data.error });
+    }
+  });
+
+  sock.on("turn-timer", (data) => {
+    if (state.gameActive && data.remainingMs !== undefined) {
+      updateTimerDisplay(data.remainingMs);
     }
   });
 
@@ -416,6 +481,9 @@ function connectSocket() {
   sock.on("room-state", (data) => {
     sockLog("recv", "room-state", data);
     state.gameActive = data.status === "ACTIVE";
+    if (data.status !== "ACTIVE") {
+      hideTimerDisplay();
+    }
     updateBoardVisual({
       board: data.board,
       currentPlayer: data.currentPlayer,
@@ -424,6 +492,7 @@ function connectSocket() {
       playerX: data.players?.[0],
       playerO: data.players?.[1],
       gameStatus: data.status,
+      turnDeadline: data.turnDeadline,
     });
     state.currentRoomId = data.roomId;
     socketRoomId.value = data.roomId;

@@ -1,0 +1,570 @@
+[
+  {
+    "order": 1,
+    "timestamp": "2026-07-21T12:33:00.418Z",
+    "type": "event",
+    "category": "event",
+    "endpoint": "connect",
+    "direction": "",
+    "playerId": "",
+    "method": "",
+    "url": "",
+    "msg": "Connecting..."
+  },
+  {
+    "order": 2,
+    "timestamp": "2026-07-21T12:33:00.423Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "connect",
+    "direction": "recv",
+    "playerId": "cbe5d293-5487-4cae-9017-8a8d0f4ec38f",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "socketId": "ynwB7Bd8xZwLeR05AAAL"
+    },
+    "msg": "connect"
+  },
+  {
+    "order": 3,
+    "timestamp": "2026-07-21T12:33:00.423Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "connect",
+    "direction": "recv",
+    "playerId": "cbe5d293-5487-4cae-9017-8a8d0f4ec38f",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "socketId": "ynwB7Bd8xZwLeR05AAAL"
+    },
+    "msg": "connect"
+  },
+  {
+    "order": 4,
+    "timestamp": "2026-07-21T12:33:14.487Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "join-room",
+    "direction": "sent",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "bc834f13-b51e-42f5-9ea8-828293b0aa0d",
+      "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8"
+    },
+    "msg": "join-room"
+  },
+  {
+    "order": 5,
+    "timestamp": "2026-07-21T12:33:14.487Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "join-room",
+    "direction": "sent",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "bc834f13-b51e-42f5-9ea8-828293b0aa0d",
+      "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8"
+    },
+    "msg": "join-room"
+  },
+  {
+    "order": 6,
+    "timestamp": "2026-07-21T12:33:14.490Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "room-joined",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "bc834f13-b51e-42f5-9ea8-828293b0aa0d",
+      "player": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "room-joined"
+  },
+  {
+    "order": 7,
+    "timestamp": "2026-07-21T12:33:14.490Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "room-joined",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "bc834f13-b51e-42f5-9ea8-828293b0aa0d",
+      "player": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "room-joined"
+  },
+  {
+    "order": 8,
+    "timestamp": "2026-07-21T12:33:14.493Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "player-joined",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+      "symbol": "O",
+      "players": [
+        {
+          "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+          "symbol": "X",
+          "connected": true
+        },
+        {
+          "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+          "symbol": "O",
+          "connected": true
+        }
+      ]
+    },
+    "msg": "player-joined"
+  },
+  {
+    "order": 9,
+    "timestamp": "2026-07-21T12:33:14.493Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "player-joined",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+      "symbol": "O",
+      "players": [
+        {
+          "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+          "symbol": "X",
+          "connected": true
+        },
+        {
+          "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+          "symbol": "O",
+          "connected": true
+        }
+      ]
+    },
+    "msg": "player-joined"
+  },
+  {
+    "order": 10,
+    "timestamp": "2026-07-21T12:33:14.493Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "game-started",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "board": [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784637224488,
+      "playerX": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "symbol": "X",
+        "connected": true
+      },
+      "playerO": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "game-started"
+  },
+  {
+    "order": 11,
+    "timestamp": "2026-07-21T12:33:14.493Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "game-started",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "board": [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784637224488,
+      "playerX": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "symbol": "X",
+        "connected": true
+      },
+      "playerO": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      }
+    },
+    "msg": "game-started"
+  },
+  {
+    "order": 12,
+    "timestamp": "2026-07-21T12:33:18.896Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "row": 0,
+        "col": 2,
+        "timestamp": "2026-07-21T12:33:18.894Z"
+      },
+      "board": [
+        [
+          null,
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784637228894,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 13,
+    "timestamp": "2026-07-21T12:33:18.896Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "row": 0,
+        "col": 2,
+        "timestamp": "2026-07-21T12:33:18.894Z"
+      },
+      "board": [
+        [
+          null,
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      },
+      "turnDeadline": 1784637228894,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 14,
+    "timestamp": "2026-07-21T12:33:41.143Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "bc834f13-b51e-42f5-9ea8-828293b0aa0d",
+      "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+      "row": 0,
+      "col": 0
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 15,
+    "timestamp": "2026-07-21T12:33:41.143Z",
+    "type": "socket",
+    "category": "sent",
+    "endpoint": "make-move",
+    "direction": "sent",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "roomId": "bc834f13-b51e-42f5-9ea8-828293b0aa0d",
+      "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+      "row": 0,
+      "col": 0
+    },
+    "msg": "make-move"
+  },
+  {
+    "order": 16,
+    "timestamp": "2026-07-21T12:33:41.147Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "row": 0,
+        "col": 0,
+        "timestamp": "2026-07-21T12:33:41.146Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784637251146,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 17,
+    "timestamp": "2026-07-21T12:33:41.147Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "move": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "row": 0,
+        "col": 0,
+        "timestamp": "2026-07-21T12:33:41.146Z"
+      },
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "currentPlayer": {
+        "playerId": "15d2a915-fcfe-4887-af20-d11a0ff28516",
+        "symbol": "X",
+        "connected": true
+      },
+      "turnDeadline": 1784637251146,
+      "winner": null,
+      "isDraw": false
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 18,
+    "timestamp": "2026-07-21T12:34:11.148Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "winner": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      },
+      "winningCells": null,
+      "isDraw": false,
+      "currentPlayer": null,
+      "turnDeadline": null,
+      "timeoutWin": true
+    },
+    "msg": "move-result"
+  },
+  {
+    "order": 19,
+    "timestamp": "2026-07-21T12:34:11.149Z",
+    "type": "socket",
+    "category": "recv",
+    "endpoint": "move-result",
+    "direction": "recv",
+    "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+    "method": "",
+    "url": "",
+    "eventPayload": {
+      "success": true,
+      "board": [
+        [
+          "O",
+          null,
+          "X"
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      "winner": {
+        "playerId": "99d6e0ec-4b54-41db-8105-0293ec58c8b8",
+        "symbol": "O",
+        "connected": true
+      },
+      "winningCells": null,
+      "isDraw": false,
+      "currentPlayer": null,
+      "turnDeadline": null,
+      "timeoutWin": true
+    },
+    "msg": "move-result"
+  }
+]

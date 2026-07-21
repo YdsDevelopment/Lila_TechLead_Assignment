@@ -5,6 +5,7 @@ export interface ServerEvents {
   "player-joined": (payload: PlayerJoinedPayload) => void;
   "game-started": (payload: GameStartedPayload) => void;
   "move-result": (payload: MoveResultPayload) => void;
+  "turn-timer": (payload: TurnTimerPayload) => void;
   "player-disconnected": (payload: PlayerDisconnectedPayload) => void;
   "player-reconnected": (payload: PlayerReconnectedPayload) => void;
   "room-state": (payload: RoomStatePayload) => void;
@@ -92,6 +93,13 @@ export interface RoomStatePayload {
 
 export interface ErrorPayload {
   message: string;
+}
+
+export interface TurnTimerPayload {
+  roomId: string;
+  remainingMs: number;
+  turnDeadline: number;
+  currentPlayer: PlayerSummary;
 }
 
 export interface PlayerSummary {

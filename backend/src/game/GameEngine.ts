@@ -35,6 +35,7 @@ export class GameEngine {
   private completedAt: Date | null;
   private turnDeadline: number | null;
   private turnTimeoutMs: number;
+  private turnTimeoutEnabled: boolean;
   private winnerChecker: WinnerChecker;
 
   constructor() {
@@ -53,11 +54,12 @@ export class GameEngine {
     this.startedAt = null;
     this.completedAt = null;
     this.turnDeadline = null;
-    this.turnTimeoutMs = 30000;
+    this.turnTimeoutMs = 60000;
+    this.turnTimeoutEnabled = true;
     this.winnerChecker = new WinnerChecker();
   }
 
-  initialize(player1: Player, player2: Player, turnTimeoutMs: number): void {
+  initialize(player1: Player, player2: Player, turnTimeoutMs: number, turnTimeoutEnabled: boolean = true): void {
     this.board = [
       [null, null, null],
       [null, null, null],
@@ -73,6 +75,7 @@ export class GameEngine {
     this.startedAt = new Date();
     this.completedAt = null;
     this.turnTimeoutMs = turnTimeoutMs;
+    this.turnTimeoutEnabled = turnTimeoutEnabled;
     this.turnDeadline = Date.now() + turnTimeoutMs;
   }
 
@@ -103,6 +106,9 @@ export class GameEngine {
     }
 
     if (this.turnDeadline && Date.now() > this.turnDeadline) {
+      if (this.turnTimeoutEnabled) {
+        return this.resolveTimeout();
+      }
       throw new MoveTimeoutError();
     }
 
@@ -169,6 +175,23 @@ export class GameEngine {
     };
   }
 
+  checkTimeout(): MoveResult | null {
+    if (!this.startedAt || this.isGameOver()) {
+      return null;
+    }
+    if (!this.turnTimeoutEnabled || !this.turnDeadline) {
+      return null;
+    }
+    if (Date.now() <= this.turnDeadline) {
+      return null;
+    }
+    return this.resolveTimeout();
+  }
+
+  isTurnTimeoutEnabled(): boolean {
+    return this.turnTimeoutEnabled;
+  }
+
   getBoard(): (string | null)[][] {
     return this.cloneBoard();
   }
@@ -218,6 +241,24 @@ export class GameEngine {
 
   getCompletedAt(): Date | null {
     return this.completedAt;
+  }
+
+  private resolveTimeout(): MoveResult {
+    const opponent = this.currentPlayerIndex === 0 ? this.player2 : this.player1;
+    this.winner = opponent;
+    this.completedAt = new Date();
+    this.turnDeadline = null;
+
+    return {
+      success: true,
+      move: undefined,
+      board: this.cloneBoard(),
+      winner: this.winner,
+      winningCells: null,
+      isDraw: false,
+      currentPlayer: null,
+      turnDeadline: null,
+    };
   }
 
   private cloneBoard(): (string | null)[][] {

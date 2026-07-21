@@ -73,6 +73,13 @@
     .info-grid .label { color: #94a3b8; }
     .info-grid .value { color: #e2e8f0; }
 
+    .timer-bar { height: 4px; background: #334155; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+    .timer-bar .fill { height: 100%; border-radius: 2px; transition: width 1s linear, background 0.3s; background: #22c55e; width: 100%; }
+    .timer-bar .fill.warning { background: #f59e0b; }
+    .timer-bar .fill.danger { background: #ef4444; animation: pulse 0.5s ease-in-out infinite alternate; }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+    .turn-timer { display: flex; align-items: center; gap: 6px; }
+
     .hint { font-size: 0.72rem; color: #64748b; background: #0f172a; border-radius: 6px; padding: 8px; margin-bottom: 10px; line-height: 1.5; }
     .hint strong { color: #94a3b8; }
 
@@ -82,7 +89,7 @@
       .container { grid-template-columns: 1fr; }
     }
   </style>
-  <script type="module" crossorigin src="/assets/index-BtGVtiEI.js"></script>
+  <script type="module" crossorigin src="/assets/index-D8lEK-jJ.js"></script>
 </head>
 <body>
 
@@ -181,8 +188,12 @@
           <span class="label">Player O:</span><span class="value" id="infoPlayerO">-</span>
           <span class="label">Current Turn:</span><span class="value" id="infoTurn">-</span>
           <span class="label">Your Turn?</span><span class="value" id="infoYourTurn">-</span>
+          <span class="label">Turn Timer:</span><span class="value" id="infoTurnTimer" style="font-variant-numeric: tabular-nums;">-</span>
           <span class="label">Winner:</span><span class="value" id="infoWinner">-</span>
           <span class="label">Last Move:</span><span class="value" id="infoLastMove">-</span>
+        </div>
+        <div class="timer-bar" id="turnTimerBar" style="display:none;">
+          <div class="fill" id="turnTimerFill"></div>
         </div>
       </div>
     </div>

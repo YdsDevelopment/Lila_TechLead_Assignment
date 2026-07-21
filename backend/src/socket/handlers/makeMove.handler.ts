@@ -1,5 +1,6 @@
 import { Socket, Server as SocketIOServer } from "socket.io";
 import { GameManager } from "../../game/GameManager";
+import { scheduleTurnTimeout, clearTurnTimeout } from "../socket";
 import { logger } from "../../utils/Logger";
 
 export function handleMakeMove(
@@ -60,9 +61,16 @@ export function handleMakeMove(
         io.to(data.roomId).emit("move-result", payload);
 
         if (result.winner || result.isDraw) {
+          clearTurnTimeout(data.roomId);
           logger.info(
             `Game ${data.roomId} finished: ${result.winner ? `winner ${result.winner.playerId}` : "draw"}`
           );
+        } else if (result.success && result.currentPlayer) {
+          const room = gameManager.getRoom(data.roomId);
+          const delay = result.turnDeadline ? result.turnDeadline - Date.now() : 0;
+          if (delay > 0 && room?.game.isTurnTimeoutEnabled()) {
+            scheduleTurnTimeout(data.roomId, delay);
+          }
         }
       } catch (err) {
         const error = err as Error;

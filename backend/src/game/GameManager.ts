@@ -10,10 +10,12 @@ import { env } from "../config/env";
 export class GameManager {
   private roomManager: RoomManager;
   private turnTimeoutMs: number;
+  private turnTimeoutEnabled: boolean;
 
-  constructor(turnTimeoutMs?: number) {
+  constructor(turnTimeoutMs?: number, turnTimeoutEnabled?: boolean) {
     this.roomManager = new RoomManager();
     this.turnTimeoutMs = turnTimeoutMs ?? env.turnTimeoutMs;
+    this.turnTimeoutEnabled = turnTimeoutEnabled ?? env.turnTimeoutEnabled;
   }
 
   createRoom(params: CreatePlayerParams): Room {
@@ -31,11 +33,29 @@ export class GameManager {
 
     if (room.players.length === 2 && room.status === RoomStatus.ACTIVE) {
       const game = room.game;
-      game.initialize(room.players[0], room.players[1], this.turnTimeoutMs);
+      game.initialize(room.players[0], room.players[1], this.turnTimeoutMs, this.turnTimeoutEnabled);
       logger.info(`Game started in room ${room.roomId}`);
     }
 
     return { room, player };
+  }
+
+  checkTimeout(roomId: string): MoveResult | null {
+    const room = this.roomManager.getRoom(roomId);
+    if (!room || room.status !== RoomStatus.ACTIVE) {
+      return null;
+    }
+
+    const result = room.game.checkTimeout();
+    if (result) {
+      room.status = RoomStatus.FINISHED;
+      room.updatedAt = new Date();
+      logger.info(
+        `Game over in room ${room.roomId}: opponent won by timeout`
+      );
+    }
+
+    return result;
   }
 
   makeMove(roomId: string, playerId: string, row: number, col: number): MoveResult {
@@ -125,6 +145,10 @@ export class GameManager {
 
   getOpenRooms(): Room[] {
     return this.roomManager.getOpenRooms();
+  }
+
+  getActiveRooms(): Room[] {
+    return this.roomManager.getActiveRooms();
   }
 
   getRoomManager(): RoomManager {
