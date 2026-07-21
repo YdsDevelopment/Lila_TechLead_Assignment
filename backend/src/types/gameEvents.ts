@@ -8,6 +8,7 @@ export interface ServerEvents {
   "turn-timer": (payload: TurnTimerPayload) => void;
   "player-disconnected": (payload: PlayerDisconnectedPayload) => void;
   "player-reconnected": (payload: PlayerReconnectedPayload) => void;
+  "player-left": (payload: PlayerLeftPayload) => void;
   "room-state": (payload: RoomStatePayload) => void;
   "error": (payload: ErrorPayload) => void;
 }
@@ -17,6 +18,8 @@ export interface ClientEvents {
   "join-room": (payload: JoinRoomPayload) => void;
   "make-move": (payload: MakeMovePayload) => void;
   "reconnect": (payload: ReconnectPayload) => void;
+  "play-again": (payload: PlayAgainPayload) => void;
+  "leave-room": (payload: LeaveRoomPayload) => void;
 }
 
 export interface CreateRoomPayload {
@@ -93,6 +96,23 @@ export interface RoomStatePayload {
 
 export interface ErrorPayload {
   message: string;
+}
+
+export interface PlayAgainPayload {
+  roomId: string;
+  playerId: string;
+}
+
+export interface LeaveRoomPayload {
+  roomId: string;
+  playerId: string;
+}
+
+export interface PlayerLeftPayload {
+  playerId: string;
+  roomId: string;
+  remainingPlayers: number;
+  roomStatus: string;
 }
 
 export interface TurnTimerPayload {

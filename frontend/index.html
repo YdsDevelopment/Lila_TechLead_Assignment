@@ -178,6 +178,10 @@
           <button data-row="2" data-col="1" disabled></button>
           <button data-row="2" data-col="2" disabled></button>
         </div>
+        <div style="margin-top:8px; display:flex; gap:6px;">
+          <button id="btnPlayAgain" class="success" disabled style="flex:1;">Play Again</button>
+          <button id="btnExitRoom" class="danger" disabled style="flex:1;">Exit</button>
+        </div>
       </div>
       <div>
         <div class="info-grid">
@@ -248,6 +252,8 @@ const restRoomId = $("#restRoomId");
 const restRoomIdField = $("#restRoomIdField");
 const socketRoomId = $("#socketRoomId");
 const boardEl = $("#gameBoard");
+const btnPlayAgain = $("#btnPlayAgain");
+const btnExitRoom = $("#btnExitRoom");
 const infoStatus = $("#infoStatus");
 const infoRoom = $("#infoRoom");
 const infoPlayerX = $("#infoPlayerX");
@@ -311,6 +317,7 @@ function updateBoardVisual(data) {
     btn.className = b[i] || "";
     btn.disabled = !state.gameActive;
   });
+  const isFinished = data.winner || data.isDraw || data.timeoutWin;
   if (data.winner) {
     gameStatus.textContent = "Winner: " + data.winner.playerId.slice(0, 8) + "... (" + data.winner.symbol + ")";
     gameStatus.className = "status-text finished";
@@ -327,6 +334,8 @@ function updateBoardVisual(data) {
     gameStatus.textContent = "Opponent timed out — " + (data.winner?.playerId === state.playerId ? "You win!" : "You lost");
     gameStatus.className = "status-text finished";
   }
+  btnPlayAgain.disabled = !isFinished;
+  btnExitRoom.disabled = !state.currentRoomId;
   infoStatus.textContent = data.gameStatus || (data.currentPlayer ? "ACTIVE" : "OPEN");
   infoPlayerX.textContent = data.playerX?.playerId ? data.playerX.playerId.slice(0, 8) + "..." : "-";
   infoPlayerO.textContent = data.playerO?.playerId ? data.playerO.playerId.slice(0, 8) + "..." : "-";
@@ -369,6 +378,8 @@ function resetGameBoard() {
   state.gameActive = false;
   state.symbol = null;
   hideTimerDisplay();
+  btnPlayAgain.disabled = true;
+  btnExitRoom.disabled = true;
   boardEl.querySelectorAll("button").forEach(b => { b.textContent = ""; b.className = ""; b.disabled = true; });
   gameStatus.textContent = "";
   gameStatus.className = "";
@@ -472,6 +483,25 @@ function connectSocket() {
 
   sock.on("player-disconnected", (data) => {
     sockLog("recv", "player-disconnected", data);
+  });
+
+  sock.on("player-left", (data) => {
+    sockLog("recv", "player-left", data);
+    if (data.playerId === state.playerId) {
+      resetGameBoard();
+      state.currentRoomId = "";
+      socketRoomId.value = "";
+      restRoomId.value = "";
+    } else {
+      infoStatus.textContent = data.roomStatus;
+      infoPlayerX.textContent = "-";
+      infoPlayerO.textContent = "-";
+      infoTurn.textContent = "-";
+      infoYourTurn.textContent = "-";
+      infoWinner.textContent = "-";
+      gameStatus.textContent = "Opponent left — waiting for new player";
+      gameStatus.className = "status-text open";
+    }
   });
 
   sock.on("player-reconnected", (data) => {
@@ -649,6 +679,20 @@ boardEl.querySelectorAll("button").forEach(btn => {
     if (!roomId) return;
     emitEvent("make-move", { roomId, playerId: state.playerId, row, col });
   });
+});
+
+// Play Again
+btnPlayAgain.addEventListener("click", () => {
+  const roomId = socketRoomId.value.trim();
+  if (!roomId) return;
+  emitEvent("play-again", { roomId, playerId: state.playerId });
+});
+
+// Exit Room
+btnExitRoom.addEventListener("click", () => {
+  const roomId = socketRoomId.value.trim();
+  if (!roomId) return;
+  emitEvent("leave-room", { roomId, playerId: state.playerId });
 });
 
 // --- Save Log ---

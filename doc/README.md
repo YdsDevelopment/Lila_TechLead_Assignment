@@ -44,14 +44,17 @@ A real-time multiplayer Tic-Tac-Toe game server built with **Node.js**, **Expres
 | `join-room` | Client → Server | Second player joins as Player O |
 | `room-joined` | Server → Client | Confirms join to the joiner |
 | `player-joined` | Server → Room | Notifies room of new player |
-| `game-started` | Server → Room | Full board, players, deadlines |
+| `game-started` | Server → Room | Full board, players, deadlines (also on play-again) |
 | `make-move` | Client → Server | Submit a move (row, col) |
 | `move-result` | Server → Room | Broadcasts updated board, winner, turn |
-| `disconnect` | Native → Server | Marks player disconnected, notifies room |
+| `disconnect` | Native → Server | Marks player disconnected; leaves room if FINISHED |
 | `player-disconnected` | Server → Room | Alerts room of disconnection |
 | `reconnect` | Client → Server | Player reconnects with player ID |
 | `room-state` | Server → Client | Full game snapshot on reconnect |
 | `player-reconnected` | Server → Room | Alerts room of reconnection |
+| `play-again` | Client → Server | Request a new game in the same room |
+| `leave-room` | Client → Server | Player leaves the room explicitly |
+| `player-left` | Server → Room | Notifies remaining player; includes `remainingPlayers` and `roomStatus` |
 | `turn-timer` | Server → Room | Countdown sync — `remainingMs` sent every 1s |
 
 ### REST API (`src/routes/`, `src/controllers/`)
@@ -70,7 +73,7 @@ A real-time multiplayer Tic-Tac-Toe game server built with **Node.js**, **Expres
 - **Barrel Exports**: Central `index.ts` re-exports all public API.
 
 ### Socket Event Types (`src/types/`)
-- `SocketEvents` — 15 event name constants.
+- `SocketEvents` — 18 event name constants.
 - `ServerEvents` / `ClientEvents` — Fully typed payload interfaces for every event.
 - Type-safe payloads: `CreateRoomPayload`, `GameStartedPayload`, `MoveResultPayload`, `RoomStatePayload`, `ErrorPayload`, etc.
 
@@ -122,7 +125,9 @@ backend/
 │   │       ├── joinRoom.handler.ts
 │   │       ├── makeMove.handler.ts
 │   │       ├── disconnect.handler.ts
-│   │       └── reconnect.handler.ts
+│   │       ├── reconnect.handler.ts
+│   │       ├── playAgain.handler.ts
+│   │       └── leaveRoom.handler.ts
 │   ├── game/
 │   │   ├── GameManager.ts    # Facade coordinating Room + Game
 │   │   ├── RoomManager.ts    # Room CRUD + player management
@@ -224,9 +229,51 @@ The server runs a 1-second `setInterval` (`socket.ts:startTimerBroadcast`) that 
   - `resetTurnTimer(data)` — stores `turnDeadline` from game events to compute the progress bar total; calls `hideTimerDisplay()` if no active game.
   - `hideTimerDisplay()` — clears state and hides the timer bar.
 
+## Play Again / Leave Room
+
+### Play Again
+When a game is `FINISHED`, either player can request a new game in the same room:
+
+| Layer | File | Description |
+|---|---|---|
+| Event | `play-again` (Client → Server) | Payload: `{ roomId, playerId }` |
+| Handler | `backend/src/socket/handlers/playAgain.handler.ts` | Validates room is FINISHED, calls `GameManager.playAgain()` |
+| Logic | `backend/src/game/GameManager.ts:playAgain()` | Resets game engine, sets room to ACTIVE |
+| RoomManager | `backend/src/game/RoomManager.ts:resetGame()` | Creates new `GameEngine`, re-initializes with same players |
+| Response | Server → Room emits `game-started` | Same payload as initial game start; new board, deadlines, turn timeout scheduled |
+
+### Leave Room / Exit
+A player can explicitly leave the room, or be auto-removed on disconnect when the game is finished:
+
+| Layer | File | Description |
+|---|---|---|
+| Event | `leave-room` (Client → Server) | Payload: `{ roomId, playerId }` |
+| Handler | `backend/src/socket/handlers/leaveRoom.handler.ts` | Calls `GameManager.leaveRoom()`, socket leaves the room, clears turn timeout |
+| Logic | `backend/src/game/GameManager.ts:leaveRoom()` | Delegates to `RoomManager.leaveRoom()` |
+| RoomManager | `backend/src/game/RoomManager.ts:leaveRoom()` | Removes player from room array; if 0 players remain → room deleted; if players remain → room status becomes `OPEN` and a fresh `GameEngine` is created |
+| Auto-leave | `backend/src/socket/handlers/disconnect.handler.ts` | When a player disconnects from a `FINISHED` game, they are fully removed (not just marked disconnected) |
+| Response | Server → Room emits `player-left` | Payload: `{ playerId, roomId, remainingPlayers, roomStatus }` |
+| Frontend | If the current player left → board resets; if the opponent left → status shows "Opponent left — waiting for new player" | New players can join the `OPEN` room |
+
+### Room Status Transitions
+```
+OPEN ──(2nd player joins)──→ ACTIVE ──(win/draw/timeout)──→ FINISHED
+                                                               │
+                                          ┌────────────────────┤
+                                          ▼                    ▼
+                                     play-again           player leaves
+                                          │                    │
+                                          ▼                    ▼
+                                       ACTIVE                OPEN
+                                                           (new player can join)
+```
+
 ### Socket Events
 | Event | Direction | Description |
 |---|---|---|
+| `play-again` | Client → Server | Request a new game in the same finished room |
+| `leave-room` | Client → Server | Player leaves the room explicitly |
+| `player-left` | Server → Room | Notifies remaining player of the departure |
 | `turn-timer` | Server → Room | Broadcasts remaining turn time every 1s |
 
 ## License

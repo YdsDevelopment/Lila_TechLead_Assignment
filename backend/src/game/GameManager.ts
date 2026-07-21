@@ -101,6 +101,37 @@ export class GameManager {
     }
   }
 
+  playAgain(roomId: string, playerId: string): Room {
+    const room = this.roomManager.getRoomOrThrow(roomId);
+    if (room.status !== RoomStatus.FINISHED) {
+      throw new Error("Game is not finished");
+    }
+    if (!room.players.some((p) => p.playerId === playerId)) {
+      throw new Error("Player not in this room");
+    }
+    this.roomManager.resetGame(roomId, this.turnTimeoutMs, this.turnTimeoutEnabled);
+    logger.info(`Play again in room ${roomId} by ${playerId}`);
+    return room;
+  }
+
+  leaveRoom(playerId: string): { roomId: string; remainingPlayers: number; roomStatus: RoomStatus } | null {
+    const room = this.roomManager.getRoomByPlayer(playerId);
+    if (!room) {
+      return null;
+    }
+    const player = room.players.find((p) => p.playerId === playerId);
+    if (player) {
+      this.roomManager.leaveRoom(playerId);
+      logger.info(`Player ${playerId} left room ${room.roomId}`);
+      return {
+        roomId: room.roomId,
+        remainingPlayers: room.players.length,
+        roomStatus: room.status,
+      };
+    }
+    return null;
+  }
+
   disconnectPlayer(socketId: string): { playerId: string; roomId: string } | null {
     const room = this.roomManager.getRoomBySocket(socketId);
     if (!room) {

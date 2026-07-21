@@ -8,6 +8,8 @@ import { handleJoinRoom } from "./handlers/joinRoom.handler";
 import { handleMakeMove } from "./handlers/makeMove.handler";
 import { handleReconnect } from "./handlers/reconnect.handler";
 import { handleDisconnect } from "./handlers/disconnect.handler";
+import { handlePlayAgain } from "./handlers/playAgain.handler";
+import { handleLeaveRoom } from "./handlers/leaveRoom.handler";
 
 let io: SocketIOServer;
 let gameManager: GameManager;
@@ -31,6 +33,8 @@ export function initializeSocket(httpServer: HttpServer): SocketIOServer {
     handleMakeMove(socket, io, gameManager);
     handleReconnect(socket, io, gameManager);
     handleDisconnect(socket, io, gameManager);
+    handlePlayAgain(socket, io, gameManager);
+    handleLeaveRoom(socket, io, gameManager);
   });
 
   startTimerBroadcast();

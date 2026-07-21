@@ -55,7 +55,9 @@ export class RoomManager {
     this.validatePlayerNotDuplicateInRoom(room, player.playerId);
     this.validateSocketNotDuplicateInRoom(room, player.socketId);
 
-    const newPlayer = this.createPlayer(player, "O");
+    const existingSymbol = room.players[0]?.symbol;
+    const newSymbol = existingSymbol === "X" ? "O" : "X";
+    const newPlayer = this.createPlayer(player, newSymbol);
     room.players.push(newPlayer);
     room.updatedAt = new Date();
 
@@ -92,8 +94,9 @@ export class RoomManager {
       return;
     }
 
-    if (room.status === RoomStatus.ACTIVE) {
+    if (room.status === RoomStatus.ACTIVE || room.status === RoomStatus.FINISHED) {
       room.status = RoomStatus.OPEN;
+      room.game = new GameEngine();
       logger.info(`Room ${room.roomId} reverted to OPEN`);
     }
 
@@ -185,6 +188,15 @@ export class RoomManager {
       player.connected = false;
       room.updatedAt = new Date();
     }
+  }
+
+  resetGame(roomId: string, turnTimeoutMs: number, turnTimeoutEnabled: boolean): void {
+    const room = this.getRoomOrThrow(roomId);
+    room.game = new GameEngine();
+    room.game.initialize(room.players[0], room.players[1], turnTimeoutMs, turnTimeoutEnabled);
+    room.status = RoomStatus.ACTIVE;
+    room.updatedAt = new Date();
+    logger.info(`Game reset in room ${room.roomId}`);
   }
 
   markPlayerConnected(playerId: string): void {
