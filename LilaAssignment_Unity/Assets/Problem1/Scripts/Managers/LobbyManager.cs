@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace TicTacToe
@@ -12,9 +10,15 @@ namespace TicTacToe
 
         public event Action<List<RoomSummary>> OnRoomsUpdated;
         public event Action<string> OnFetchError;
+        public event Action<HealthStatusPayload> OnHealthReceived;
+        public event Action<RoomDetailsPayload> OnRoomDetailsReceived;
 
         public List<RoomSummary> CachedRooms { get; private set; }
         public bool IsFetching { get; private set; }
+
+        private TicTacToeSocketClient _client;
+
+        private string _roomId;
 
         private void Awake()
         {
@@ -23,31 +27,76 @@ namespace TicTacToe
             DontDestroyOnLoad(gameObject);
         }
 
-        public async Task RefreshRooms()
+        private void Start()
+        {
+            _client = NetworkManager.Instance.Client;
+            RegisterHandlers();
+        }
+
+        private void RegisterHandlers()
+        {
+            _client.OnRoomsList += (payload) =>
+            {
+                CachedRooms = payload.rooms ?? new List<RoomSummary>();
+                OnRoomsUpdated?.Invoke(CachedRooms);
+                IsFetching = false;
+            };
+
+            _client.OnRoomDetails += (payload) =>
+            {
+                OnRoomDetailsReceived?.Invoke(payload);
+            };
+
+            _client.OnHealthStatus += (payload) =>
+            {
+                OnHealthReceived?.Invoke(payload);
+            };
+
+            _client.OnError += (msg) =>
+            {
+                OnFetchError?.Invoke(msg);
+            };
+
+            _client.OnRoomCreated += (roomId,payload) =>
+            {
+                OnRoomDetails(roomId, payload);
+            };
+
+            _client.OnRoomJoined += (roomId,payload) =>
+            {
+                OnRoomDetails(roomId, payload);
+            };
+        }
+
+        public void RefreshRooms()
         {
             if (IsFetching) return;
             IsFetching = true;
+            _client.RequestRooms();
+        }
 
-            try
+        public void GetRoomById(string roomId)
+        {
+            if (string.IsNullOrWhiteSpace(roomId))
             {
-                var rooms = await APIUtils.GetOpenRoomsAsync();
-                CachedRooms = rooms.ToList();
-                OnRoomsUpdated?.Invoke(CachedRooms);
+                OnFetchError?.Invoke("Room ID is required");
+                return;
             }
-            catch (ApiException ex)
+            _client.RequestRoom(roomId);
+        }
+
+        public void GetHealth()
+        {
+            _client.RequestHealth();
+        }
+
+        private void OnRoomDetails(string roomId , PlayerSummary payload)
+        {
+            if (payload != null)
             {
-                var message = string.IsNullOrEmpty(ex.Message) ? "Failed to fetch rooms" : ex.Message;
-                Debug.LogError($"[LobbyManager] API error: {ex.StatusCode} - {message}");
-                OnFetchError?.Invoke(message);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[LobbyManager] Failed to fetch rooms: {ex.Message}");
-                OnFetchError?.Invoke(ex.Message);
-            }
-            finally
-            {
-                IsFetching = false;
+                _roomId = roomId;
+                PlayerPrefs.SetString("RoomId",_roomId);
+                PlayerPrefs.Save();
             }
         }
     }

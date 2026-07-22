@@ -12,6 +12,12 @@ namespace TicTacToe
 
         [SerializeField] private string _serverUrl = "http://localhost:3000";
         public string ServerUrl => _serverUrl;
+
+        public void SetServerUrl(string url)
+        {
+            if (!string.IsNullOrEmpty(url))
+                _serverUrl = url;
+        }
         private string _playerId;
         private bool _wasConnectedBefore;
         private bool _reconnectOverlayShowing;
@@ -32,10 +38,10 @@ namespace TicTacToe
 
         private void Start()
         {
-            Connect();
+            // Connect();
         }
 
-        private string GetOrCreatePlayerId()
+        public string GetOrCreatePlayerId()
         {
             string id = PlayerPrefs.GetString("playerId", "");
             if (string.IsNullOrEmpty(id))
@@ -47,8 +53,19 @@ namespace TicTacToe
             return id;
         }
 
+        public string RegeratePlayerID()
+        {
+            var id = System.Guid.NewGuid().ToString();
+            PlayerPrefs.SetString("playerId", id);
+            PlayerPrefs.Save();
+            _playerId = id;
+            Debug.Log("generate new Player Id " + _playerId);
+            return _playerId;
+        }
+
         public void Connect()
         {
+            Debug.LogError("NetworkManager Connect is Called");
             _client.Connect(_serverUrl, _playerId);
         }
 
@@ -63,7 +80,7 @@ namespace TicTacToe
         {
             _client.OnConnected += () =>
             {
-                Debug.Log("[NetworkManager] Connected");
+                Debug.LogError("[NetworkManager] Connected");
                 _wasConnectedBefore = true;
                 HideReconnectingOverlay();
                 if (_client.IsInRoom)
@@ -100,23 +117,13 @@ namespace TicTacToe
             {
                 if (payload.playerId == _client.PlayerId)
                 {
-                    ReturnToLobby();
+                    Debug.Log("[NetworkManager] Player left room");
                 }
             };
 
             _client.OnGameStarted += () =>
             {
                 Debug.Log("[NetworkManager] Game started");
-            };
-
-            _client.OnMoveResult += (payload) =>
-            {
-                HandleMoveResult(payload);
-            };
-
-            _client.OnTurnTimer += (remainingMs, deadline) =>
-            {
-                UpdateTurnTimer(remainingMs);
             };
 
             _client.OnPlayerDisconnected += (playerId) =>
@@ -136,15 +143,6 @@ namespace TicTacToe
             };
         }
 
-        private void HandleMoveResult(MoveResultPayload payload)
-        {
-            if (!payload.success && !string.IsNullOrEmpty(payload.error))
-            {
-                Debug.LogError($"[NetworkManager] Move failed: {payload.error}");
-                return;
-            }
-        }
-
         private void ShowReconnectingOverlay()
         {
             if (_reconnectOverlayShowing) return;
@@ -157,15 +155,6 @@ namespace TicTacToe
             if (!_reconnectOverlayShowing) return;
             _reconnectOverlayShowing = false;
             Debug.Log("[NetworkManager] Hiding reconnecting overlay");
-        }
-
-        private void ReturnToLobby()
-        {
-            Debug.Log("[NetworkManager] Returning to lobby");
-        }
-
-        private void UpdateTurnTimer(long remainingMs)
-        {
         }
 
         private void OnApplicationFocus(bool hasFocus)

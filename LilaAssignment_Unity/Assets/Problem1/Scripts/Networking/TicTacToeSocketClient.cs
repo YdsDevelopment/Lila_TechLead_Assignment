@@ -32,6 +32,9 @@ namespace TicTacToe
         public event Action<PlayerLeftPayload> OnPlayerLeft;
         public event Action<RoomStatePayload> OnRoomState;
         public event Action<PlayerJoinedPayload> OnPlayerJoined;
+        public event Action<HealthStatusPayload> OnHealthStatus;
+        public event Action<RoomsListPayload> OnRoomsList;
+        public event Action<RoomDetailsPayload> OnRoomDetails;
 
         public TicTacToeSocketClient(ISocketManager socketManager)
         {
@@ -44,6 +47,7 @@ namespace TicTacToe
         // ---------------------------------------------------------------
         public void Connect(string serverUrl, string playerId)
         {
+            Debug.LogError("TicTacToeSocketClient Connect is Called : " + serverUrl + " Playre ID: "+ playerId);
             _playerId = playerId;
             _socket.Connect(serverUrl);
         }
@@ -108,6 +112,31 @@ namespace TicTacToe
         {
             _socket.Emit(SocketEventNames.RECONNECT, new ReconnectPayload
             {
+                playerId = _playerId
+            });
+        }
+
+        public void RequestHealth()
+        {
+            _socket.Emit(SocketEventNames.GET_HEALTH, new GetHealthPayload
+            {
+                playerId = _playerId
+            });
+        }
+
+        public void RequestRooms()
+        {
+            _socket.Emit(SocketEventNames.GET_ROOMS, new GetRoomsPayload
+            {
+                playerId = _playerId
+            });
+        }
+
+        public void RequestRoom(string roomId)
+        {
+            _socket.Emit(SocketEventNames.GET_ROOM, new GetRoomPayload
+            {
+                roomId = roomId,
                 playerId = _playerId
             });
         }
@@ -228,6 +257,24 @@ namespace TicTacToe
                     }
                 }
                 OnRoomState?.Invoke(payload);
+            };
+
+            _socket.OnHealthStatus += (payload) =>
+            {
+                Debug.Log($"[TicTacToeClient] Health status: {payload.status} / {payload.server}");
+                OnHealthStatus?.Invoke(payload);
+            };
+
+            _socket.OnRoomsList += (payload) =>
+            {
+                Debug.Log($"[TicTacToeClient] Rooms list received: {payload.rooms?.Count} rooms");
+                OnRoomsList?.Invoke(payload);
+            };
+
+            _socket.OnRoomDetails += (payload) =>
+            {
+                Debug.Log($"[TicTacToeClient] Room details received: {payload.roomId}");
+                OnRoomDetails?.Invoke(payload);
             };
         }
     }

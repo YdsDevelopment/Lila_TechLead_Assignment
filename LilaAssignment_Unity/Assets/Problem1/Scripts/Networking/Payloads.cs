@@ -6,6 +6,25 @@ namespace TicTacToe
     // --- Client → Server Payloads ---
 
     [Serializable]
+    public class GetHealthPayload
+    {
+        public string playerId;
+    }
+
+    [Serializable]
+    public class GetRoomsPayload
+    {
+        public string playerId;
+    }
+
+    [Serializable]
+    public class GetRoomPayload
+    {
+        public string roomId;
+        public string playerId;
+    }
+
+    [Serializable]
     public class CreateRoomPayload
     {
         public string playerId;
@@ -145,5 +164,29 @@ namespace TicTacToe
     public class ErrorPayload
     {
         public string message;
+    }
+
+    [Serializable]
+    public class HealthStatusPayload
+    {
+        public string status;
+        public string server;
+    }
+
+    [Serializable]
+    public class RoomsListPayload
+    {
+        public List<RoomSummary> rooms;
+    }
+
+    [Serializable]
+    public class RoomDetailsPayload
+    {
+        public string roomId;
+        public string status;
+        public List<PlayerSummary> players;
+        public GameSnapshot game;
+        public DateTime createdAt;
+        public DateTime updatedAt;
     }
 }

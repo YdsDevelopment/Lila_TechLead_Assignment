@@ -26,5 +26,8 @@ namespace TicTacToe
         event Action<PlayerLeftPayload> OnPlayerLeft;
         event Action<RoomStatePayload> OnRoomState;
         event Action<ErrorPayload> OnError;
+        event Action<HealthStatusPayload> OnHealthStatus;
+        event Action<RoomsListPayload> OnRoomsList;
+        event Action<RoomDetailsPayload> OnRoomDetails;
     }
 }

@@ -156,9 +156,18 @@
       <button class="primary" data-socket="make-move">make-move</button>
       <button class="warning" data-socket="reconnect">reconnect</button>
     </div>
+    <div class="btn-group" style="margin-top:6px;">
+      <button class="primary" data-socket="get-health">get-health</button>
+      <button class="primary" data-socket="get-rooms">get-rooms</button>
+      <button class="primary" data-socket="get-room">get-room</button>
+    </div>
     <div class="field">
       <label>Room ID <span style="color:#64748b;font-weight:400;">(auto-filled after create/join)</span></label>
       <input id="socketRoomId" placeholder="Paste Room ID from other tab" />
+    </div>
+    <div id="roomsListContainer" style="display:none;margin-bottom:8px;">
+      <label style="font-size:0.72rem;color:#94a3b8;display:block;margin-bottom:4px;">Available Rooms</label>
+      <div id="roomsList" style="background:#0f172a;border-radius:6px;padding:6px;max-height:160px;overflow-y:auto;font-size:0.75rem;"></div>
     </div>
     <div class="log" id="socketLog"><div class="entry"><span class="msg">Connect then use socket events...</span></div></div>
   </section>
@@ -532,6 +541,34 @@ function connectSocket() {
     if (me) { state.symbol = me.symbol; playerSymbol.textContent = me.symbol; }
   });
 
+  sock.on("rooms-list", (data) => {
+    sockLog("recv", "rooms-list", data);
+    const container = document.getElementById("roomsListContainer");
+    const list = document.getElementById("roomsList");
+    if (container && list) {
+      container.style.display = "block";
+      if (!data.rooms || data.rooms.length === 0) {
+        list.innerHTML = '<div style="color:#94a3b8;padding:4px;">No open rooms available</div>';
+      } else {
+        list.innerHTML = data.rooms.map(r => {
+          const players = r.players.map(p => p.playerId.slice(0, 8) + "...").join(", ");
+          return `<div style="padding:4px 6px;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;">
+            <span style="color:#93c5fd;">${r.roomId.slice(0, 8)}...</span>
+            <span style="color:#94a3b8;">${r.playerCount}/2 · ${players || "empty"}</span>
+          </div>`;
+        }).join("");
+      }
+    }
+  });
+
+  sock.on("room-details", (data) => {
+    sockLog("recv", "room-details", data);
+  });
+
+  sock.on("health-status", (data) => {
+    sockLog("recv", "health-status", data);
+  });
+
   sock.on("error", (data) => {
     sockLog("error", "error", data);
   });
@@ -662,6 +699,16 @@ $$("[data-socket]").forEach(btn => {
         break;
       case "reconnect":
         payload = { playerId: state.playerId };
+        break;
+      case "get-health":
+        payload = { playerId: state.playerId };
+        break;
+      case "get-rooms":
+        payload = { playerId: state.playerId };
+        break;
+      case "get-room":
+        if (!roomId) { log(socketLog, "error", "Enter a Room ID"); return; }
+        payload = { playerId: state.playerId, roomId };
         break;
     }
     if (payload) emitEvent(ep, payload);

@@ -9,6 +9,9 @@ namespace TicTacToe
         public const string RECONNECT = "reconnect";
         public const string PLAY_AGAIN = "play-again";
         public const string LEAVE_ROOM = "leave-room";
+        public const string GET_HEALTH = "get-health";
+        public const string GET_ROOMS = "get-rooms";
+        public const string GET_ROOM = "get-room";
 
         // Server → Client
         public const string ROOM_CREATED = "room-created";
@@ -21,6 +24,9 @@ namespace TicTacToe
         public const string PLAYER_RECONNECTED = "player-reconnected";
         public const string PLAYER_LEFT = "player-left";
         public const string ROOM_STATE = "room-state";
+        public const string ROOMS_LIST = "rooms-list";
+        public const string ROOM_DETAILS = "room-details";
+        public const string HEALTH_STATUS = "health-status";
         public const string ERROR = "error";
     }
 }

@@ -6,36 +6,36 @@ namespace TicTacToe.UI
 {
     public class BoardRenderer : MonoBehaviour
     {
-        [SerializeField] private Button[,] _cells;
+        [SerializeField]
+        private List<GridItem> _cells = new List<GridItem>();
 
         public void UpdateBoard(PlayerSymbol?[,] board)
         {
-            if (_cells == null) return;
+            if (_cells == null || _cells.Count == 0) return;
 
-            for (int r = 0; r < 3; r++)
+            for (int i = 0; i < _cells.Count; i++)
             {
-                for (int c = 0; c < 3; c++)
+                var gridItem = _cells[i];
+                if (gridItem == null) continue;
+
+                var cell = gridItem.Button;
+                if (cell == null) continue;
+
+                var symbol = board[gridItem.Row, gridItem.Column];
+                var text = cell.GetComponentInChildren<Text>();
+
+                if (symbol == null)
                 {
-                    var cell = _cells[r, c];
-                    if (cell == null) continue;
-
-                    var symbol = board[r, c];
-                    var text = cell.GetComponentInChildren<Text>();
-
-                    if (symbol == null)
-                    {
-                        if (text != null) text.text = "";
-                        cell.interactable = true;
-                        cell.onClick.RemoveAllListeners();
-                        int row = r, col = c;
-                        cell.onClick.AddListener(() => MakeMove(row, col));
-                    }
-                    else
-                    {
-                        if (text != null) text.text = symbol == PlayerSymbol.X ? "X" : "O";
-                        cell.interactable = false;
-                        cell.onClick.RemoveAllListeners();
-                    }
+                    if (text != null) text.text = "";
+                    cell.interactable = true;
+                    cell.onClick.RemoveAllListeners();
+                    cell.onClick.AddListener(() => MakeMove(gridItem.Row, gridItem.Column));
+                }
+                else
+                {
+                    if (text != null) text.text = symbol == PlayerSymbol.X ? "X" : "O";
+                    cell.interactable = false;
+                    cell.onClick.RemoveAllListeners();
                 }
             }
         }
@@ -51,38 +51,59 @@ namespace TicTacToe.UI
 
         public void HighlightWinningCells(List<List<int>> winningCells)
         {
-            if (winningCells == null || _cells == null) return;
+            if (winningCells == null || _cells == null || _cells.Count == 0) return;
             foreach (var cell in winningCells)
             {
-                var img = _cells[cell[0], cell[1]].GetComponent<Image>();
-                if (img != null)
-                    img.color = Color.green;
+                foreach (var gridItem in _cells)
+                {
+                    if (gridItem.Row == cell[0] && gridItem.Column == cell[1])
+                    {
+                        var img = gridItem.Button.GetComponent<Image>();
+                        if (img != null)
+                            img.color = Color.green;
+                        break;
+                    }
+                }
             }
         }
 
         public void SetInteractable(bool active)
         {
-            if (_cells == null) return;
-            foreach (var cell in _cells)
+            if (_cells == null || _cells.Count == 0) return;
+            foreach (var gridItem in _cells)
             {
-                if (cell != null)
-                    cell.interactable = active;
+                if (gridItem?.Button != null)
+                    gridItem.Button.interactable = active;
             }
         }
 
         public void Reset()
         {
-            if (_cells == null) return;
-            foreach (var cell in _cells)
+            if (_cells == null || _cells.Count == 0) return;
+            foreach (var gridItem in _cells)
             {
-                if (cell == null) continue;
-                var text = cell.GetComponentInChildren<Text>();
+                if (gridItem?.Button == null) continue;
+                var text = gridItem.Button.GetComponentInChildren<Text>();
                 if (text != null) text.text = "";
-                var img = cell.GetComponent<Image>();
+                var img = gridItem.Button.GetComponent<Image>();
                 if (img != null) img.color = Color.white;
-                cell.interactable = false;
-                cell.onClick.RemoveAllListeners();
+                gridItem.Button.interactable = false;
+                gridItem.Button.onClick.RemoveAllListeners();
             }
+        }
+
+        public void Start()
+        {
+            if(_cells == null || _cells.Count == 0)
+            {
+                GetAllTheGridItems();
+            }
+        }
+
+        private void GetAllTheGridItems()
+        {
+            var gridItems = gameObject.GetComponentsInChildren<GridItem>();
+            _cells.AddRange(gridItems);
         }
     }
 }

@@ -2,6 +2,7 @@ import { RoomStatus } from "../models/RoomStatus";
 
 export interface ServerEvents {
   "room-created": (payload: RoomCreatedPayload) => void;
+  "room-joined": (payload: RoomJoinedPayload) => void;
   "player-joined": (payload: PlayerJoinedPayload) => void;
   "game-started": (payload: GameStartedPayload) => void;
   "move-result": (payload: MoveResultPayload) => void;
@@ -10,6 +11,9 @@ export interface ServerEvents {
   "player-reconnected": (payload: PlayerReconnectedPayload) => void;
   "player-left": (payload: PlayerLeftPayload) => void;
   "room-state": (payload: RoomStatePayload) => void;
+  "rooms-list": (payload: RoomsListPayload) => void;
+  "room-details": (payload: RoomDetailsPayload) => void;
+  "health-status": (payload: HealthStatusPayload) => void;
   "error": (payload: ErrorPayload) => void;
 }
 
@@ -20,6 +24,9 @@ export interface ClientEvents {
   "reconnect": (payload: ReconnectPayload) => void;
   "play-again": (payload: PlayAgainPayload) => void;
   "leave-room": (payload: LeaveRoomPayload) => void;
+  "get-rooms": (payload: GetRoomsPayload) => void;
+  "get-room": (payload: GetRoomPayload) => void;
+  "get-health": (payload: GetHealthPayload) => void;
 }
 
 export interface CreateRoomPayload {
@@ -43,6 +50,11 @@ export interface ReconnectPayload {
 }
 
 export interface RoomCreatedPayload {
+  roomId: string;
+  player: PlayerSummary;
+}
+
+export interface RoomJoinedPayload {
   roomId: string;
   player: PlayerSummary;
 }
@@ -120,6 +132,58 @@ export interface TurnTimerPayload {
   remainingMs: number;
   turnDeadline: number;
   currentPlayer: PlayerSummary;
+}
+
+export interface GetRoomsPayload {
+  playerId: string;
+}
+
+export interface GetRoomPayload {
+  playerId: string;
+  roomId: string;
+}
+
+export interface RoomSummaryPayload {
+  roomId: string;
+  status: string;
+  playerCount: number;
+  players: PlayerSummary[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoomsListPayload {
+  rooms: RoomSummaryPayload[];
+}
+
+export interface RoomDetailsPayload {
+  roomId: string;
+  status: string;
+  players: PlayerSummary[];
+  game: GameSnapshotPayload | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GameSnapshotPayload {
+  board: (string | null)[][];
+  currentPlayer: PlayerSummary | null;
+  turnDeadline: number | null;
+  winner: PlayerSummary | null;
+  winningCells: [number, number][] | null;
+  isDraw: boolean;
+  moves: MoveSummary[];
+  startedAt: string | null;
+  completedAt: string | null;
+}
+
+export interface GetHealthPayload {
+  playerId: string;
+}
+
+export interface HealthStatusPayload {
+  status: string;
+  server: string;
 }
 
 export interface PlayerSummary {
