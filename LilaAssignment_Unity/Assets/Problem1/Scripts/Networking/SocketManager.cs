@@ -36,12 +36,10 @@ namespace TicTacToe
 
         public void Connect(string serverUrl)
         {
-            Debug.LogError("SocketManager Connect is Called : 1 " + serverUrl);
             if (_socket != null)
             {
                 Disconnect();
             }
-            Debug.LogError("SocketManager Connect is Called : 2 " + serverUrl);
 
             var uri = new Uri(serverUrl);
             _socket = new SocketIOUnity(uri, new SocketIOOptions
@@ -51,12 +49,9 @@ namespace TicTacToe
                 ReconnectionAttempts = 5,
                 ReconnectionDelay = 1000
             });
-            Debug.LogError("SocketManager Connect is Called 3 : " + serverUrl);
             RegisterCoreHandlers();
             RegisterEventHandlers();
-            Debug.LogError("SocketManager Connect is Called : 4 " + serverUrl);
             _socket.Connect();
-            Debug.LogError("SocketManager Connect is Called : 5 " + serverUrl);
         }
 
         public void Disconnect()
@@ -76,7 +71,6 @@ namespace TicTacToe
                 Debug.LogWarning($"SocketManager: Cannot emit '{eventName}' — not connected");
                 return;
             }
-            Debug.LogError("Socket Emmit : " + eventName + " " + JsonHelper.ToJsonString(payload));
             _socket.Emit(eventName, payload);
         }
 
