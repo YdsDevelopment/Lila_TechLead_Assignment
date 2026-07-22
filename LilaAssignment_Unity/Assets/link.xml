@@ -1,0 +1,8 @@
+<linker>
+  <assembly fullname="SocketIOClient" preserve="all" />
+  <assembly fullname="Newtonsoft.Json" preserve="all" />
+  <assembly fullname="System.Core" preserve="all" />
+  <assembly fullname="System" preserve="all" />
+  <assembly fullname="System.Runtime" preserve="all" />
+  <assembly fullname="netstandard" preserve="all" />
+</linker>

@@ -31,14 +31,18 @@ namespace TicTacToe
             _ = UnityMainThreadDispatcher.Instance;
 
             _playerId = GetOrCreatePlayerId();
-            var socketManager = new SocketManager();
+            ISocketManager socketManager;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            socketManager = gameObject.AddComponent<WebGLSocketManager>();
+#else
+            socketManager = new SocketManager();
+#endif
             _client = new TicTacToeSocketClient(socketManager);
             RegisterClientEvents();
         }
 
         private void Start()
         {
-            // Connect();
         }
 
         public string GetOrCreatePlayerId()
