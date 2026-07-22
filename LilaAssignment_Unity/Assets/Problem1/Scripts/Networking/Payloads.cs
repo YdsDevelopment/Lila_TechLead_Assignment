@@ -8,62 +8,62 @@ namespace TicTacToe
     [Serializable]
     public class GetHealthPayload
     {
-        public string playerId;
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class GetRoomsPayload
     {
-        public string playerId;
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class GetRoomPayload
     {
-        public string roomId;
-        public string playerId;
+        public string roomId { get; set; }
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class CreateRoomPayload
     {
-        public string playerId;
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class JoinRoomPayload
     {
-        public string roomId;
-        public string playerId;
+        public string roomId { get; set; }
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class MakeMovePayload
     {
-        public string roomId;
-        public string playerId;
-        public int row;
-        public int col;
+        public string roomId { get; set; }
+        public string playerId { get; set; }
+        public int row { get; set; }
+        public int col { get; set; }
     }
 
     [Serializable]
     public class ReconnectPayload
     {
-        public string playerId;
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class PlayAgainPayload
     {
-        public string roomId;
-        public string playerId;
+        public string roomId { get; set; }
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class LeaveRoomPayload
     {
-        public string roomId;
-        public string playerId;
+        public string roomId { get; set; }
+        public string playerId { get; set; }
     }
 
     // --- Server → Client Payloads ---
@@ -71,122 +71,122 @@ namespace TicTacToe
     [Serializable]
     public class RoomCreatedPayload
     {
-        public string roomId;
-        public PlayerSummary player;
+        public string roomId { get; set; }
+        public PlayerSummary player { get; set; }
     }
 
     [Serializable]
     public class RoomJoinedPayload
     {
-        public string roomId;
-        public PlayerSummary player;
+        public string roomId { get; set; }
+        public PlayerSummary player { get; set; }
     }
 
     [Serializable]
     public class PlayerJoinedPayload
     {
-        public string playerId;
-        public PlayerSymbol symbol;
-        public List<PlayerSummary> players;
+        public string playerId { get; set; }
+        public PlayerSymbol symbol { get; set; }
+        public List<PlayerSummary> players { get; set; }
     }
 
     [Serializable]
     public class GameStartedPayload
     {
-        public List<List<string>> board;
-        public PlayerSummary currentPlayer;
-        public long turnDeadline;
-        public PlayerSummary playerX;
-        public PlayerSummary playerO;
+        public List<List<string>> board { get; set; }
+        public PlayerSummary currentPlayer { get; set; }
+        public long turnDeadline { get; set; }
+        public PlayerSummary playerX { get; set; }
+        public PlayerSummary playerO { get; set; }
     }
 
     [Serializable]
     public class MoveResultPayload
     {
-        public bool success;
-        public string error;
-        public MoveSummary move;
-        public List<List<string>> board;
-        public PlayerSummary currentPlayer;
-        public long? turnDeadline;
-        public PlayerSummary winner;
-        public List<List<int>> winningCells;
-        public bool isDraw;
-        public bool timeoutWin;
+        public bool success { get; set; }
+        public string error { get; set; }
+        public MoveSummary move { get; set; }
+        public List<List<string>> board { get; set; }
+        public PlayerSummary currentPlayer { get; set; }
+        public long? turnDeadline { get; set; }
+        public PlayerSummary winner { get; set; }
+        public List<List<int>> winningCells { get; set; }
+        public bool isDraw { get; set; }
+        public bool timeoutWin { get; set; }
     }
 
     [Serializable]
     public class TurnTimerPayload
     {
-        public string roomId;
-        public long remainingMs;
-        public long turnDeadline;
-        public PlayerSummary currentPlayer;
+        public string roomId { get; set; }
+        public long remainingMs { get; set; }
+        public long turnDeadline { get; set; }
+        public PlayerSummary currentPlayer { get; set; }
     }
 
     [Serializable]
     public class PlayerDisconnectedPayload
     {
-        public string playerId;
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class PlayerReconnectedPayload
     {
-        public string playerId;
+        public string playerId { get; set; }
     }
 
     [Serializable]
     public class PlayerLeftPayload
     {
-        public string playerId;
-        public string roomId;
-        public int remainingPlayers;
-        public string roomStatus;
+        public string playerId { get; set; }
+        public string roomId { get; set; }
+        public int remainingPlayers { get; set; }
+        public string roomStatus { get; set; }
     }
 
     [Serializable]
     public class RoomStatePayload
     {
-        public string roomId;
-        public string status;
-        public List<PlayerSummary> players;
-        public List<List<string>> board;
-        public PlayerSummary currentPlayer;
-        public long? turnDeadline;
-        public PlayerSummary winner;
-        public List<List<int>> winningCells;
-        public bool isDraw;
-        public List<MoveSummary> moves;
+        public string roomId { get; set; }
+        public string status { get; set; }
+        public List<PlayerSummary> players { get; set; }
+        public List<List<string>> board { get; set; }
+        public PlayerSummary currentPlayer { get; set; }
+        public long? turnDeadline { get; set; }
+        public PlayerSummary winner { get; set; }
+        public List<List<int>> winningCells { get; set; }
+        public bool isDraw { get; set; }
+        public List<MoveSummary> moves { get; set; }
     }
 
     [Serializable]
     public class ErrorPayload
     {
-        public string message;
+        public string message { get; set; }
     }
 
     [Serializable]
     public class HealthStatusPayload
     {
-        public string status;
-        public string server;
+        public string status { get; set; }
+        public string server { get; set; }
     }
 
     [Serializable]
     public class RoomsListPayload
     {
-        public List<RoomSummary> rooms;
+        public List<RoomSummary> rooms { get; set; }
     }
 
     [Serializable]
     public class RoomDetailsPayload
     {
-        public string roomId;
-        public string status;
-        public List<PlayerSummary> players;
-        public GameSnapshot game;
-        public DateTime createdAt;
-        public DateTime updatedAt;
+        public string roomId { get; set; }
+        public string status { get; set; }
+        public List<PlayerSummary> players { get; set; }
+        public GameSnapshot game { get; set; }
+        public DateTime createdAt { get; set; }
+        public DateTime updatedAt { get; set; }
     }
 }

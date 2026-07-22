@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -222,6 +223,9 @@ namespace TicTacToe.UI
                 else
                 {
                     var item = GetFromPool();
+                    Debug.LogError("Prefab Item: is Presnt : " + item == null);
+                    Debug.LogError("Prefab Item: is Presnt :  room : " + room == null);
+                    
                     item.Setup(room.roomId, room.playerCount);
                     item.transform.SetAsLastSibling();
                     _activeItems[room.roomId] = item;

@@ -76,7 +76,7 @@ namespace TicTacToe
                 Debug.LogWarning($"SocketManager: Cannot emit '{eventName}' — not connected");
                 return;
             }
-
+            Debug.LogError("Socket Emmit : " + eventName + " " + JsonHelper.ToJsonString(payload));
             _socket.Emit(eventName, payload);
         }
 
@@ -141,6 +141,8 @@ namespace TicTacToe
         {
             _socket.On(eventName, response =>
             {
+                Debug.Log("Response: " + response);
+
                 UnityMainThreadDispatcher.Instance.Enqueue(() =>
                 {
                     try
@@ -160,7 +162,7 @@ namespace TicTacToe
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogError($"[SocketManager] Failed to deserialize '{eventName}': {ex.Message}\n{response}");
+                        Debug.LogError($"[SocketManager] Failed to deserialize '{eventName}': {ex.Message}\n{response}" + "Stack : " + ex.StackTrace);
                     }
                 });
             });

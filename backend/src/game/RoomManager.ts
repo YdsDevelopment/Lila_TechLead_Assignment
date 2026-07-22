@@ -47,6 +47,7 @@ export class RoomManager {
   }
 
   joinRoom(roomId: string, player: CreatePlayerParams): Room {
+    console.log("Join Room : " + roomId);
     const room = this.getRoomOrThrow(roomId);
 
     this.validatePlayerNotInAnyRoom(player.playerId);

@@ -6,8 +6,8 @@ namespace TicTacToe.UI
 {
     public class RoomItem : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _roomIdText;
-        [SerializeField] private TextMeshProUGUI _playerCountText;
+        [SerializeField] private TMP_InputField _roomIdText;
+        [SerializeField] private TMP_InputField _playerCountText;
         [SerializeField] private Button _joinButton;
 
         private string _roomId;
@@ -38,6 +38,7 @@ namespace TicTacToe.UI
 
         private void OnJoinClicked()
         {
+            Debug.LogError("OnJoinRoom Clicked: " + _roomId);
             if (NetworkManager.Instance?.Client != null && !string.IsNullOrEmpty(_roomId))
                 NetworkManager.Instance.Client.JoinRoom(_roomId);
         }
