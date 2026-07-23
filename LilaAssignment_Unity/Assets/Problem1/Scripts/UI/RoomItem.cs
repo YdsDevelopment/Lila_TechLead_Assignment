@@ -14,6 +14,11 @@ namespace TicTacToe.UI
 
         private void Awake()
         {
+            Initialise();
+        }
+
+        public void Initialise()
+        {
             if (_joinButton != null)
                 _joinButton.onClick.AddListener(OnJoinClicked);
         }

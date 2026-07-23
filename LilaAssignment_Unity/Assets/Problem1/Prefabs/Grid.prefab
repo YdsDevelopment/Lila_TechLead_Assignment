@@ -93,7 +93,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (4)
+      value: TicTacToeGridItem(4)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -203,7 +203,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (8)
+      value: TicTacToeGridItem(8)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -313,7 +313,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (2)
+      value: TicTacToeGridItem(2)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -419,7 +419,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (5)
+      value: TicTacToeGridItem(5)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -529,7 +529,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button
+      value: TicTacToeGridItem
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -631,7 +631,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (6)
+      value: TicTacToeGridItem(6)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -737,7 +737,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (1)
+      value: TicTacToeGridItem(1)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -843,7 +843,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (3)
+      value: TicTacToeGridItem(3)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x
@@ -949,7 +949,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1401085346508461303, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Name
-      value: Button (7)
+      value: TicTacToeGridItem(7)
       objectReference: {fileID: 0}
     - target: {fileID: 3249094790066924773, guid: ecef76a162c2a4a6a818d8b3f4564f2c, type: 3}
       propertyPath: m_Pivot.x

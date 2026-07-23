@@ -1,3 +1,5 @@
+using System;
+using SocketIOClient.Transport;
 using TicTacToe.Utils;
 using UnityEngine;
 
@@ -21,6 +23,8 @@ namespace TicTacToe
         private string _playerId;
         private bool _wasConnectedBefore;
         private bool _reconnectOverlayShowing;
+        private bool _wasInRoom;
+        private const string WAS_IN_ROOM_PREF_KEY = "was_in_room";
 
         private void Awake()
         {
@@ -31,6 +35,7 @@ namespace TicTacToe
             _ = UnityMainThreadDispatcher.Instance;
 
             _playerId = GetOrCreatePlayerId();
+            _wasInRoom = PlayerPrefs.GetInt(WAS_IN_ROOM_PREF_KEY, 0) == 1;
             ISocketManager socketManager;
 #if UNITY_WEBGL && !UNITY_EDITOR
             socketManager = gameObject.AddComponent<WebGLSocketManager>();
@@ -81,6 +86,14 @@ namespace TicTacToe
                     _client.LeaveRoom();
                 _client.Disconnect();
             }
+            PersistInRoom(false);
+        }
+
+        private void PersistInRoom(bool inRoom)
+        {
+            _wasInRoom = inRoom;
+            PlayerPrefs.SetInt(WAS_IN_ROOM_PREF_KEY, inRoom ? 1 : 0);
+            PlayerPrefs.Save();
         }
 
         private void RegisterClientEvents()
@@ -90,7 +103,7 @@ namespace TicTacToe
                 Debug.LogError("[NetworkManager] Connected");
                 _wasConnectedBefore = true;
                 HideReconnectingOverlay();
-                if (_client.IsInRoom)
+                if (_wasInRoom)
                     _client.Reconnect();
             };
 
@@ -108,11 +121,13 @@ namespace TicTacToe
             _client.OnRoomCreated += (roomId, player) =>
             {
                 Debug.Log($"[NetworkManager] Room created: {roomId}");
+                PersistInRoom(true);
             };
 
             _client.OnRoomJoined += (roomId, player) =>
             {
                 Debug.Log($"[NetworkManager] Room joined: {roomId}");
+                PersistInRoom(true);
             };
 
             _client.OnPlayerJoined += (payload) =>
@@ -122,15 +137,17 @@ namespace TicTacToe
 
             _client.OnPlayerLeft += (payload) =>
             {
+                Debug.Log("[NetworkManager] Player left room " + JsonHelper.ToJsonString(payload));
                 if (payload.playerId == _client.PlayerId)
                 {
                     Debug.Log("[NetworkManager] Player left room");
+                    PersistInRoom(false);
                 }
             };
 
-            _client.OnGameStarted += () =>
+            _client.OnGameStarted += (payload) =>
             {
-                Debug.Log("[NetworkManager] Game started");
+                Debug.LogError("[NetworkManager] Game started");
             };
 
             _client.OnPlayerDisconnected += (playerId) =>
@@ -178,7 +195,7 @@ namespace TicTacToe
 
         private void OnApplicationQuit()
         {
-            DisconnectAndCleanup();
+            // DisconnectAndCleanup();
         }
     }
 }

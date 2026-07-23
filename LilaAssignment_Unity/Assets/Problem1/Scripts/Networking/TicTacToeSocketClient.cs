@@ -24,9 +24,9 @@ namespace TicTacToe
 
         public event Action<string, PlayerSummary> OnRoomCreated;
         public event Action<string, PlayerSummary> OnRoomJoined;
-        public event Action OnGameStarted;
+        public event Action<GameStartedPayload> OnGameStarted;
         public event Action<MoveResultPayload> OnMoveResult;
-        public event Action<long, long> OnTurnTimer; // remainingMs, turnDeadline
+        public event Action<string, long, long> OnTurnTimer; // remainingMs, turnDeadline
         public event Action<string> OnPlayerDisconnected;
         public event Action<string> OnPlayerReconnected;
         public event Action<PlayerLeftPayload> OnPlayerLeft;
@@ -210,17 +210,18 @@ namespace TicTacToe
             _socket.OnGameStarted += (payload) =>
             {
                 Debug.Log("[TicTacToeClient] Game started");
-                OnGameStarted?.Invoke();
+                OnGameStarted?.Invoke(payload);
             };
 
             _socket.OnMoveResult += (payload) =>
             {
+                Debug.Log("[TicTacToeClient] Game OnMoveResult "+ JsonHelper.ToJsonString(payload));
                 OnMoveResult?.Invoke(payload);
             };
 
             _socket.OnTurnTimer += (payload) =>
             {
-                OnTurnTimer?.Invoke(payload.remainingMs, payload.turnDeadline);
+                OnTurnTimer?.Invoke(payload.currentPlayer.playerId,payload.remainingMs, payload.turnDeadline);
             };
 
             _socket.OnPlayerDisconnected += (payload) =>
@@ -267,13 +268,11 @@ namespace TicTacToe
 
             _socket.OnRoomsList += (payload) =>
             {
-                Debug.Log($"[TicTacToeClient] Rooms list received: {payload.rooms?.Count} rooms");
                 OnRoomsList?.Invoke(payload);
             };
 
             _socket.OnRoomDetails += (payload) =>
             {
-                Debug.Log($"[TicTacToeClient] Room details received: {payload.roomId}");
                 OnRoomDetails?.Invoke(payload);
             };
         }

@@ -20,6 +20,12 @@ export function handleMakeMove(
 
         if (result.error) {
           payload.error = result.error;
+          payload.move = {
+            playerId: data.playerId,
+            row: data.row,
+            col: data.col,
+            timestamp: "",
+          };
         }
         if (result.move) {
           payload.move = {

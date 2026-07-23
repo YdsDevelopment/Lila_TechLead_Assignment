@@ -37,6 +37,8 @@ public class ConnectionStatusHandler : MonoBehaviour
             _text = GetComponentInChildren<TextMeshProUGUI>();
         }
         SetState(connectionState.DISCONNECTED);
+        RegisterNetworkEvents();
+        InitialiseClickMethods();
     }
 
     private void RegisterNetworkEvents()

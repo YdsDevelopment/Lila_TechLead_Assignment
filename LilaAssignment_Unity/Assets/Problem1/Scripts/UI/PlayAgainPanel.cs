@@ -24,7 +24,7 @@ namespace TicTacToe.UI
 
             _client.OnMoveResult += OnMoveResult;
             GameManager.Instance.OnPlayAgainReady += OnPlayAgainReady;
-            GameManager.Instance.OnGameStarted += Hide;
+            GameManager.Instance.OnGameUIStarted += Hide;
             GameManager.Instance.OnReturnToLobby += Hide;
 
             _playAgainButton.onClick.AddListener(OnPlayAgainClicked);
@@ -42,7 +42,7 @@ namespace TicTacToe.UI
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnPlayAgainReady -= OnPlayAgainReady;
-                GameManager.Instance.OnGameStarted -= Hide;
+                GameManager.Instance.OnGameUIStarted -= Hide;
                 GameManager.Instance.OnReturnToLobby -= Hide;
             }
         }

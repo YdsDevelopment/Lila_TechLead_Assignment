@@ -129,6 +129,7 @@ namespace TicTacToe.UI
                 NetworkManager.Instance.Client.OnRoomCreated += OnRoomDetailsReceived;
                 NetworkManager.Instance.Client.OnRoomJoined += OnRoomJoinDetailsReceived;
                 NetworkManager.Instance.Client.OnError += OnNetworkError;
+                NetworkManager.Instance.Client.OnPlayerLeft += OnPlayerLeft;
             }
         }
 
@@ -139,7 +140,8 @@ namespace TicTacToe.UI
                 NetworkManager.Instance.Client.OnRoomsList -= OnRoomsListReceived;
                 NetworkManager.Instance.Client.OnRoomCreated -= OnRoomDetailsReceived;
                 NetworkManager.Instance.Client.OnRoomJoined -= OnRoomJoinDetailsReceived;
-                NetworkManager.Instance.Client.OnError += OnNetworkError;
+                NetworkManager.Instance.Client.OnError -= OnNetworkError;
+                NetworkManager.Instance.Client.OnPlayerLeft -= OnPlayerLeft;
             }
         }
 
@@ -170,9 +172,30 @@ namespace TicTacToe.UI
         {
             if(payload != null)
             {
-                _roomIDDisplay.text = roomId;
-                ToggleOverlay(true);
-                _errorText.text = "Joined Room, waiting for Game start..";
+                if(payload.playerId == NetworkManager.Instance.GetOrCreatePlayerId())
+                {
+                    Debug.LogError("OnRoomJoinDetailsReceived : " + payload.playerId);
+                    _roomIDDisplay.text = roomId;
+                    ToggleOverlay(true);
+                    _errorText.text = "Joined Room, waiting for Game start.. ";
+                }
+            }
+        }
+
+        private void OnPlayerLeft(PlayerLeftPayload payload)
+        {
+            if(payload != null)
+            {
+                if(payload.playerId == NetworkManager.Instance.GetOrCreatePlayerId())
+                {
+                    Debug.LogError("OnPlayerLeft : " + payload.playerId);
+                    _roomIDDisplay.text = "";
+                    ToggleOverlay(false);
+                    if(NetworkManager.Instance.Client.IsConnected)
+                    {
+                        _errorText.text = "Create / Join the Room";
+                    }
+                }
             }
         }
 
@@ -222,6 +245,7 @@ namespace TicTacToe.UI
             {
                 var item = _pool.Pop();
                 item.transform.SetParent(_roomListContent, false);
+                item.Initialise();
                 return item;
             }
             var go = Instantiate(_roomItemPrefab, _roomListContent);

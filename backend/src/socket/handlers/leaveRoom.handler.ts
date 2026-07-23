@@ -16,7 +16,6 @@ export function handleLeaveRoom(
         return;
       }
 
-      socket.leave(data.roomId);
       clearTurnTimeout(data.roomId);
 
       io.to(data.roomId).emit("player-left", {
@@ -25,6 +24,8 @@ export function handleLeaveRoom(
         remainingPlayers: result.remainingPlayers,
         roomStatus: result.roomStatus,
       });
+
+      socket.leave(data.roomId);
 
       logger.info(`Player ${data.playerId} left room ${data.roomId}`);
     } catch (err) {

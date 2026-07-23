@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,79 @@ namespace TicTacToe.UI
     {
         [SerializeField]
         private List<TicTacToeTile> _cells = new List<TicTacToeTile>();
+
+        private void Awake()
+        {
+            Debug.LogError("BoardRenderer Awake Called");
+            if (_cells == null || _cells.Count == 0)
+                GetAllTheGridItems();
+            Reset();
+            initialiseNetworkEvents();
+        }
+
+        private void initialiseNetworkEvents()
+        {
+            Debug.LogError("GameManager regidtered :initialiseNetworkEvents");
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnRoomStateRestored += OnRoomStateRestoredHandler;
+                GameManager.Instance.OnGameStarted += OnGameStartedHandler;
+                GameManager.Instance.OnMoveResult += OnMoveResultHandler;
+                Debug.LogError("GameManager regidtered :initialiseNetworkEvents");
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (GameManager.Instance != null){
+                GameManager.Instance.OnRoomStateRestored -= OnRoomStateRestoredHandler;
+                GameManager.Instance.OnGameStarted -= OnGameStartedHandler;
+                GameManager.Instance.OnMoveResult -= OnMoveResultHandler;
+            }
+        }
+
+        private void OnGameStartedHandler(GameStartedPayload payload)
+        {
+            Debug.LogError("[OnGameStartedHandler] Game started");
+            if (payload == null) return;
+            Reset();
+            // var emptyBoard = new PlayerSymbol?[3, 3];
+            var board = NetworkManager.Instance.Client.NullableBoardFromPayload(payload.board);
+            UpdateBoard(board);
+        }
+
+        private void OnMoveResultHandler(MoveResultPayload payload)
+        {
+            if (payload.board == null) return;
+            var board = NetworkManager.Instance.Client.NullableBoardFromPayload(payload.board);
+            if(payload.success == false && payload.error != "")
+            {
+                var move = payload.move;
+                if (move != null && move.playerId == NetworkManager.Instance.GetOrCreatePlayerId())
+                {
+                    var gridItem = getTileWithRowAndColumn(move.row, move.col);
+                    if (gridItem)
+                    {
+                        gridItem.HighlightWrongMove();
+                    }
+                }
+            }
+            UpdateBoard(board);
+            if (payload.winningCells != null)
+                HighlightWinningCells(payload.winningCells);
+            SetInteractable(!(payload.winner != null || payload.isDraw || payload.timeoutWin));
+        }
+
+        private void OnRoomStateRestoredHandler(RoomStatePayload payload)
+        {
+            if (payload.board == null) return;
+            var board = NetworkManager.Instance.Client.NullableBoardFromPayload(payload.board);
+            UpdateBoard(board);
+            if (payload.winningCells != null)
+                HighlightWinningCells(payload.winningCells);
+            bool isActive = payload.status == "ACTIVE" || payload.status == "PLAYING";
+            SetInteractable(isActive);
+        }
 
         public void UpdateBoard(PlayerSymbol?[,] board)
         {
@@ -22,7 +96,7 @@ namespace TicTacToe.UI
                 if (cell == null) continue;
 
                 var symbol = board[gridItem.Row, gridItem.Column];
-                var text = cell.GetComponentInChildren<Text>();
+                var text = gridItem.Label;
 
                 if (symbol == null)
                 {
@@ -33,7 +107,13 @@ namespace TicTacToe.UI
                 }
                 else
                 {
-                    if (text != null) text.text = symbol == PlayerSymbol.X ? "X" : "O";
+                    if (text != null)
+                    {
+                        text.text = symbol == PlayerSymbol.X ? "X" : "O";
+                        text.color = symbol == PlayerSymbol.X
+                            ? gridItem._labelXColor
+                            : gridItem._labelOColor;
+                    }
                     cell.interactable = false;
                     cell.onClick.RemoveAllListeners();
                 }
@@ -60,7 +140,7 @@ namespace TicTacToe.UI
                     {
                         var img = gridItem.Button.GetComponent<Image>();
                         if (img != null)
-                            img.color = Color.green;
+                            img.color = gridItem._winhighlightTileColor;
                         break;
                     }
                 }
@@ -70,6 +150,7 @@ namespace TicTacToe.UI
         public void SetInteractable(bool active)
         {
             if (_cells == null || _cells.Count == 0) return;
+            Debug.LogError("Room State : " + active);
             foreach (var gridItem in _cells)
             {
                 if (gridItem?.Button != null)
@@ -83,21 +164,23 @@ namespace TicTacToe.UI
             foreach (var gridItem in _cells)
             {
                 if (gridItem?.Button == null) continue;
-                var text = gridItem.Button.GetComponentInChildren<Text>();
+                var text = gridItem.Label;
                 if (text != null) text.text = "";
-                var img = gridItem.Button.GetComponent<Image>();
-                if (img != null) img.color = Color.white;
                 gridItem.Button.interactable = false;
+                gridItem.Initialise();
                 gridItem.Button.onClick.RemoveAllListeners();
             }
         }
 
-        public void Start()
+        public TicTacToeTile getTileWithRowAndColumn(int row, int col)
         {
-            if(_cells == null || _cells.Count == 0)
+            if (_cells == null) return null;
+            foreach (var tile in _cells)
             {
-                GetAllTheGridItems();
+                if (tile != null && tile.Row == row && tile.Column == col)
+                    return tile;
             }
+            return null;
         }
 
         private void GetAllTheGridItems()

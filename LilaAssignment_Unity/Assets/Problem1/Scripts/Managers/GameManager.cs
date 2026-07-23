@@ -1,4 +1,5 @@
 using System;
+using SocketIOClient.Transport;
 using UnityEngine;
 
 namespace TicTacToe
@@ -16,10 +17,13 @@ namespace TicTacToe
 
         public GameUIState CurrentState { get; private set; } = GameUIState.Lobby;
 
-        public event Action<GameUIState> OnStateChanged;
-        public event Action OnGameStarted;
+        public event Action<GameUIState, bool> OnStateChanged;
+        public event Action<GameStartedPayload> OnGameStarted;
+        public event Action OnGameUIStarted;
         public event Action OnReturnToLobby;
         public event Action OnPlayAgainReady;
+        public event Action<RoomStatePayload> OnRoomStateRestored;
+        public event Action<MoveResultPayload> OnMoveResult;
 
         private TicTacToeSocketClient _client;
 
@@ -50,10 +54,11 @@ namespace TicTacToe
                 SetState(GameUIState.Lobby);
             };
 
-            _client.OnGameStarted += () =>
+            _client.OnGameStarted += (payload) =>
             {
                 SetState(GameUIState.Playing);
-                OnGameStarted?.Invoke();
+                OnGameStarted?.Invoke(payload);
+                OnGameUIStarted?.Invoke();
             };
 
             _client.OnMoveResult += (payload) =>
@@ -63,6 +68,7 @@ namespace TicTacToe
                     SetState(GameUIState.GameOver);
                     OnPlayAgainReady?.Invoke();
                 }
+                OnMoveResult?.Invoke(payload);
             };
 
             _client.OnPlayerLeft += (payload) =>
@@ -70,6 +76,25 @@ namespace TicTacToe
                 if (payload.playerId == _client.PlayerId)
                 {
                     ReturnToLobby();
+                }
+            };
+
+            _client.OnRoomState += (payload) =>
+            {
+                OnRoomStateRestored?.Invoke(payload);
+                if (payload.status == "ACTIVE" || payload.status == "PLAYING")
+                {
+                    SetState(GameUIState.Playing);
+                    OnGameUIStarted?.Invoke();
+                }
+                else if (payload.status == "FINISHED" || payload.winner != null || payload.isDraw)
+                {
+                    SetState(GameUIState.GameOver);
+                    OnPlayAgainReady?.Invoke();
+                }
+                else
+                {
+                    SetState(GameUIState.Lobby);
                 }
             };
 
@@ -102,11 +127,11 @@ namespace TicTacToe
             OnReturnToLobby?.Invoke();
         }
 
-        private void SetState(GameUIState newState)
+        private void SetState(GameUIState newState, bool isTimeout = false)
         {
             if (CurrentState == newState) return;
             CurrentState = newState;
-            OnStateChanged?.Invoke(newState);
+            OnStateChanged?.Invoke(newState,isTimeout);
         }
     }
 }

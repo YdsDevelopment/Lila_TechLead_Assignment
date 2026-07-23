@@ -135,7 +135,7 @@ namespace TicTacToe
         {
             _socket.On(eventName, response =>
             {
-                Debug.Log("Response: " + response);
+                Debug.Log("Response: EventName : "+ eventName + " -> " + response);
 
                 UnityMainThreadDispatcher.Instance.Enqueue(() =>
                 {

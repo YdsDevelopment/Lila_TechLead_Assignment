@@ -20,7 +20,7 @@ namespace TicTacToe.UI
             }
         }
 
-        private void OnTurnTimer(long remainingMs, long turnDeadline)
+        private void OnTurnTimer(string playerId,long remainingMs, long turnDeadline)
         {
             if (_totalDuration == 0)
                 _totalDuration = remainingMs;
@@ -44,7 +44,7 @@ namespace TicTacToe.UI
             }
         }
 
-        public void Reset()
+        public void Reset(GameStartedPayload payload)
         {
             _totalDuration = 0;
             if (_timerSlider != null)
