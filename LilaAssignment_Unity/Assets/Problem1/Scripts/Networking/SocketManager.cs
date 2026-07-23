@@ -99,7 +99,7 @@ namespace TicTacToe
             {
                 UnityMainThreadDispatcher.Instance.Enqueue(() =>
                 {
-                    Debug.LogError($"[SocketManager] Error: {error}");
+                    Debug.Log($"[SocketManager] Error: {error}");
                     OnConnectError?.Invoke(error);
                 });
             };
@@ -108,7 +108,7 @@ namespace TicTacToe
             {
                 UnityMainThreadDispatcher.Instance.Enqueue(() =>
                 {
-                    Debug.LogError($"[SocketManager] Reconnect attempt {attempt}");
+                    Debug.Log($"[SocketManager] Reconnect attempt {attempt}");
                 });
             };
         }

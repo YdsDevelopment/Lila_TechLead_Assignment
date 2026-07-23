@@ -67,7 +67,7 @@ namespace TicTacToe
 
         public void Connect()
         {
-            Debug.LogError("NetworkManager Connect is Called");
+            Debug.Log("NetworkManager Connect is Called");
             _client.Connect(_serverUrl, PlayerIdentity.GetOrCreatePlayerId());
         }
 
@@ -92,7 +92,7 @@ namespace TicTacToe
         {
             _client.OnConnected += () =>
             {
-                Debug.LogError("[NetworkManager] Connected");
+                Debug.Log("[NetworkManager] Connected");
                 _wasConnectedBefore = true;
                 HideReconnectingOverlay();
                 if (_wasInRoom)
@@ -107,7 +107,7 @@ namespace TicTacToe
 
             _client.OnError += (msg) =>
             {
-                Debug.LogError($"[NetworkManager] Error: {msg}");
+                Debug.Log($"[NetworkManager] Error: {msg}");
             };
 
             _client.OnRoomCreated += (roomId, player) =>
@@ -139,7 +139,7 @@ namespace TicTacToe
 
             _client.OnGameStarted += (payload) =>
             {
-                Debug.LogError("[NetworkManager] Game started");
+                Debug.Log("[NetworkManager] Game started");
             };
 
             _client.OnPlayerDisconnected += (playerId) =>

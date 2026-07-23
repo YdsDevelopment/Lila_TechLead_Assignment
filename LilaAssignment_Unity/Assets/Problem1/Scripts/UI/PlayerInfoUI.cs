@@ -18,7 +18,6 @@ namespace TicTacToe.UI{
 
         public void Reset()
         {
-            Debug.LogError("Reset Called");
             if(_playerLabel)
                 _playerLabel.text = "";
             

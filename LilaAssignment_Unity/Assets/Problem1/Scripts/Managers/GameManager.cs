@@ -38,7 +38,7 @@ namespace TicTacToe
         {
             _client = NetworkManager.Instance.Client;
             RegisterEvents();
-            Debug.LogError("GameManager Connect is Called");
+            Debug.Log("GameManager Connect is Called");
             NetworkManager.Instance.Connect();
         }
 

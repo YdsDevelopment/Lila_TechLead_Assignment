@@ -33,7 +33,7 @@ namespace TicTacToe.UI
 
         private void SetActivePanel(GameUIState state, bool isTimeOutWin)
         {
-            Debug.LogError("Game State Change : " + state);
+            Debug.Log("Game State Change : " + state);
             switch (state)
             {
                 case GameUIState.Lobby:

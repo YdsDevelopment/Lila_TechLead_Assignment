@@ -12,7 +12,7 @@ namespace TicTacToe.UI
 
         private void Awake()
         {
-            Debug.LogError("BoardRenderer Awake Called");
+            Debug.Log("BoardRenderer Awake Called");
             if (_cells == null || _cells.Count == 0)
                 GetAllTheGridItems();
             Reset();
@@ -21,13 +21,13 @@ namespace TicTacToe.UI
 
         private void initialiseNetworkEvents()
         {
-            Debug.LogError("GameManager regidtered :initialiseNetworkEvents");
+            Debug.Log("GameManager regidtered :initialiseNetworkEvents");
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnRoomStateRestored += OnRoomStateRestoredHandler;
                 GameManager.Instance.OnGameStarted += OnGameStartedHandler;
                 GameManager.Instance.OnMoveResult += OnMoveResultHandler;
-                Debug.LogError("GameManager regidtered :initialiseNetworkEvents");
+                Debug.Log("GameManager regidtered :initialiseNetworkEvents");
             }
         }
 
@@ -42,7 +42,7 @@ namespace TicTacToe.UI
 
         private void OnGameStartedHandler(GameStartedPayload payload)
         {
-            Debug.LogError("[OnGameStartedHandler] Game started");
+            Debug.Log("[OnGameStartedHandler] Game started");
             if (payload == null) return;
             Reset();
             // var emptyBoard = new PlayerSymbol?[3, 3];
@@ -150,7 +150,7 @@ namespace TicTacToe.UI
         public void SetInteractable(bool active)
         {
             if (_cells == null || _cells.Count == 0) return;
-            Debug.LogError("Room State : " + active);
+            Debug.Log("Room State : " + active);
             foreach (var gridItem in _cells)
             {
                 if (gridItem?.Button != null)

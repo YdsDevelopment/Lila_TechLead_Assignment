@@ -47,7 +47,7 @@ namespace TicTacToe
         // ---------------------------------------------------------------
         public void Connect(string serverUrl, string playerId)
         {
-            Debug.LogError("TicTacToeSocketClient Connect is Called : " + serverUrl + " Playre ID: "+ playerId);
+            Debug.Log("TicTacToeSocketClient Connect is Called : " + serverUrl + " Playre ID: "+ playerId);
             _playerId = playerId;
             _socket.Connect(serverUrl);
         }

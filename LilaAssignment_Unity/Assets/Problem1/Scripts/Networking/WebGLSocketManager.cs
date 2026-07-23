@@ -20,7 +20,7 @@ namespace TicTacToe
             get
             {
 #if UNITY_WEBGL && !UNITY_EDITOR
-                Debug.LogError($"[WebGLSocketManager] TTT_SocketIsConnected: called");
+                Debug.Log($"[WebGLSocketManager] TTT_SocketIsConnected: called");
                 return TTT_SocketIsConnected() == 1;
 #else
                 return false;
@@ -49,7 +49,7 @@ namespace TicTacToe
         public void Connect(string serverUrl)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-Debug.LogError($"[WebGLSocketManager] Connect : called");
+            Debug.Log($"[WebGLSocketManager] Connect : called");
             TTT_SocketConnect(serverUrl, gameObject.name);
 #endif
         }
@@ -57,7 +57,7 @@ Debug.LogError($"[WebGLSocketManager] Connect : called");
         public void Disconnect()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-Debug.LogError($"[WebGLSocketManager] Disconnect : called");
+            Debug.Log($"[WebGLSocketManager] Disconnect : called");
 
             TTT_SocketDisconnect();
 #endif
@@ -68,7 +68,7 @@ Debug.LogError($"[WebGLSocketManager] Disconnect : called");
             if (!IsConnected) return;
             var json = JsonHelper.Serialize(payload);
 #if UNITY_WEBGL && !UNITY_EDITOR
-Debug.LogError($"[WebGLSocketManager] TTT_SocketEmit : called");
+            Debug.Log($"[WebGLSocketManager] TTT_SocketEmit : called");
 
             TTT_SocketEmit(eventName, json);
 #endif

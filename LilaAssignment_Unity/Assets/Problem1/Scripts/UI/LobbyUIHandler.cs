@@ -179,7 +179,7 @@ namespace TicTacToe.UI
             {
                 if(payload.playerId == NetworkManager.Instance.GetOrCreatePlayerId())
                 {
-                    Debug.LogError("OnRoomJoinDetailsReceived : " + payload.playerId);
+                    Debug.Log("OnRoomJoinDetailsReceived : " + payload.playerId);
                     _roomIDDisplay.text = roomId;
                     ToggleOverlay(true);
                     _errorText.text = "Joined Room, waiting for Game start.. ";
@@ -193,7 +193,7 @@ namespace TicTacToe.UI
             {
                 if(payload.playerId == NetworkManager.Instance.GetOrCreatePlayerId())
                 {
-                    Debug.LogError("OnPlayerLeft : " + payload.playerId);
+                    Debug.Log("OnPlayerLeft : " + payload.playerId);
                     _roomIDDisplay.text = "";
                     ToggleOverlay(false);
                     if(NetworkManager.Instance.Client.IsConnected)

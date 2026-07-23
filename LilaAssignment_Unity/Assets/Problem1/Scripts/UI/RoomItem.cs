@@ -43,7 +43,7 @@ namespace TicTacToe.UI
 
         private void OnJoinClicked()
         {
-            Debug.LogError("OnJoinRoom Clicked: " + _roomId);
+            Debug.Log("OnJoinRoom Clicked: " + _roomId);
             if (NetworkManager.Instance?.Client != null && !string.IsNullOrEmpty(_roomId))
                 NetworkManager.Instance.Client.JoinRoom(_roomId);
         }

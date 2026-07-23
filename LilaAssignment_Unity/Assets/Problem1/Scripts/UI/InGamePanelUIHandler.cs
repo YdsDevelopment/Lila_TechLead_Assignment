@@ -21,7 +21,7 @@ namespace TicTacToe.UI
         {
             if (NetworkManager.Instance != null)
             {
-                Debug.LogError("InGamePanelUIHandler : NetUpdated");
+                Debug.Log("InGamePanelUIHandler : NetUpdated");
                 NetworkManager.Instance.Client.OnTurnTimer += updatePlayerTimer;
                 NetworkManager.Instance.Client.OnGameStarted += OnGameStarted;
             }
@@ -62,7 +62,7 @@ namespace TicTacToe.UI
 
         private void OnGameStarted(GameStartedPayload payload)
         {
-            Debug.LogError("InGamePanelUIHandler OnGameStarted =>" + JsonHelper.ToJsonString(payload));
+            Debug.Log("InGamePanelUIHandler OnGameStarted =>" + JsonHelper.ToJsonString(payload));
             if(payload != null)
             {
                 if (payload.playerX != null)
