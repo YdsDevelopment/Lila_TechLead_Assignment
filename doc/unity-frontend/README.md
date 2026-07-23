@@ -12,13 +12,10 @@
 1. Open the project in Unity Hub: `LilaAssignment_Unity/`
 2. Open Scene: `Assets/ProblemStatement_1/Scenes/TicTacToeScene.unity`
 3. Go to **File → Build Settings**
-4. Select **WebGL** as the platform (click "Switch Platform" if needed)
-5. Click **Player Settings** → Under **Resolution and Presentation**:
-   - Set **Default Screen Width** to `1280`
-   - Set **Default Screen Height** to `720`
-6. Click **Build And Run**
-7. Choose a build folder (e.g. `Builds/WebGL/`)
-8. Unity builds the project and opens it in your default browser
+4. Select **TicTacToeWeb** as the Build Profile (click "Switch Platform" if needed)
+5. Click **Build And Run**
+6. Choose a build folder (e.g. `Builds/WebGL/`)
+7. Unity builds the project and opens it in your default browser
 
 ## 2. Play the Game
 
