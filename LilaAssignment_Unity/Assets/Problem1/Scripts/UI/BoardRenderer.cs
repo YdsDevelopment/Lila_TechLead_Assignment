@@ -7,7 +7,7 @@ namespace TicTacToe.UI
     public class BoardRenderer : MonoBehaviour
     {
         [SerializeField]
-        private List<GridItem> _cells = new List<GridItem>();
+        private List<TicTacToeTile> _cells = new List<TicTacToeTile>();
 
         public void UpdateBoard(PlayerSymbol?[,] board)
         {
@@ -102,7 +102,7 @@ namespace TicTacToe.UI
 
         private void GetAllTheGridItems()
         {
-            var gridItems = gameObject.GetComponentsInChildren<GridItem>();
+            var gridItems = gameObject.GetComponentsInChildren<TicTacToeTile>();
             _cells.AddRange(gridItems);
         }
     }

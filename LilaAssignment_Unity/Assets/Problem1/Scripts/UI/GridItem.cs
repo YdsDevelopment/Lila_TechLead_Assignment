@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace TicTacToe.UI
 {
     [System.Serializable]
-    public class GridItem : MonoBehaviour
+    public class TicTacToeTile : MonoBehaviour
     {
         [SerializeField] private int _row;
         [SerializeField] private int _column;

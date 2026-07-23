@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Connected
+  m_text: Disconnected
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -223,7 +223,6 @@ GameObject:
   - component: {fileID: 7378432955016283589}
   - component: {fileID: 2751131460750853909}
   - component: {fileID: 4206801145768170630}
-  - component: {fileID: 895240336062471843}
   m_Layer: 5
   m_Name: connectionDotBG
   m_TagString: Untagged
@@ -316,20 +315,3 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &895240336062471843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9078596966419078793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c0e6ac1ace7745a5872f6a416ee6f2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _connectionDot: {fileID: 1393935411391293204}
-  _text: {fileID: 6772516136043419662}
-  _connectedColor: {r: 0.13333334, g: 0.77254903, b: 0.36862746, a: 1}
-  _disConnectedColor: {r: 0.9372549, g: 0.26666668, b: 0.26666668, a: 1}
-  _connectingColor: {r: 1, g: 0.5448718, b: 0.25, a: 1}

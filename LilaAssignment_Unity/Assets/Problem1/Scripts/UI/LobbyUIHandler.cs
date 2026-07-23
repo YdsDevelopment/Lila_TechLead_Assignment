@@ -14,10 +14,8 @@ namespace TicTacToe.UI
         [SerializeField] private TMP_InputField _roomIDDisplay;
         [SerializeField] private TextMeshProUGUI _errorText;
         [SerializeField] private Button _createRoomButton;
-        [SerializeField] private Button _joinRoomButton;
         [SerializeField] private Button _reconnectToGameButton;
         [SerializeField] private Button _newPlayerIDButton;
-        [SerializeField] private ConnectionStatusHandler _connectionStatus;
         [SerializeField] private ScrollRect _roomListScrollRect;
         [SerializeField] private RectTransform _roomListContent;
         [SerializeField] private GameObject _roomItemPrefab;
@@ -34,18 +32,13 @@ namespace TicTacToe.UI
             RegisterNetworkEvents();
             if(_playerId != null)
                 _playerId.text = NetworkManager.Instance.GetOrCreatePlayerId();
+            enableDisConnectStateUI();
         }
 
         private void InitialiseClickMethods()
         {
-            // if (_connectToServer != null)
-            //     _connectToServer.onClick.AddListener(OnConnectClicked);
-
             if (_createRoomButton != null)
                 _createRoomButton.onClick.AddListener(OnCreateRoomClicked);
-
-            // if (_joinRoomButton != null)
-            //     _joinRoomButton.onClick.AddListener(OnJoinRoomClicked);
 
             if (_reconnectToGameButton != null)
                 _reconnectToGameButton.onClick.AddListener(OnReconnectClicked);
@@ -59,16 +52,6 @@ namespace TicTacToe.UI
             // if (NetworkManager.Instance == null) return;
             NetworkManager.Instance.Client.OnConnected += OnConnected;
             NetworkManager.Instance.Client.OnDisconnected += OnDisconnected;
-        }
-
-        private void OnConnectClicked()
-        {
-            // if (NetworkManager.Instance == null) return;
-            // var url = _serverUrlInput != null ? _serverUrlInput.text.Trim() : "http://localhost:3000";
-            // if (string.IsNullOrEmpty(url)) url = "http://localhost:3000";
-            // NetworkManager.Instance.SetServerUrl(url);
-            NetworkManager.Instance.Connect();
-            SetConnectionStatus(connectionState.CONNECTING);
         }
 
         private void OnCreateRoomClicked()
@@ -101,14 +84,14 @@ namespace TicTacToe.UI
 
         private void OnConnected()
         {
-            SetConnectionStatus(connectionState.CONNECTED);
+            enableConnectStateUI();
             StartPollingRooms();
         }
 
         private void OnDisconnected(string reason)
         {
-            SetConnectionStatus(connectionState.DISCONNECTED);
             StopPollingRooms();
+            enableDisConnectStateUI();
             ReleaseAllItems();
         }
 
@@ -267,16 +250,29 @@ namespace TicTacToe.UI
             }
         }
 
-        public void SetConnectionStatus(connectionState connectionState, string status = "")
+        private void enableConnectStateUI()
         {
-            if (_connectionStatus != null)
-                _connectionStatus.SetState(connectionState);
+            _createRoomButton.interactable = true;
+            _reconnectToGameButton.interactable = true;
+        }
+
+        private void enableDisConnectStateUI()
+        {
+            _createRoomButton.interactable = false;
+            _reconnectToGameButton.interactable = false;
+            _roomIDDisplay.text = "";
+            _errorText.text = "";
+            ToggleOverlay(false);
         }
 
         public void ResetLobbyUI()
         {
             _roomIDDisplay.text = "";
             _playerId.text = "";
+            _errorText.text="";
+            _newPlayerIDButton.gameObject.SetActive(true);
+            _createRoomButton.interactable = false;
+            _reconnectToGameButton.interactable = false;
             ToggleOverlay(false);
         }
     }

@@ -8,8 +8,10 @@ public enum connectionState
 {
     CONNECTING,
     CONNECTED,
+    DISCONNECTING,
     DISCONNECTED,
 }
+
 public class ConnectionStatusHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,6 +21,8 @@ public class ConnectionStatusHandler : MonoBehaviour
     [SerializeField] private Color _connectedColor;
     [SerializeField] private Color _disConnectedColor;
     [SerializeField] private Color _connectingColor;
+    [SerializeField] private Button _connectButton;
+    [SerializeField] private Button _disconnectButton;
 
     private connectionState _currentstate;
     void Start()
@@ -33,6 +37,59 @@ public class ConnectionStatusHandler : MonoBehaviour
             _text = GetComponentInChildren<TextMeshProUGUI>();
         }
         SetState(connectionState.DISCONNECTED);
+    }
+
+    private void RegisterNetworkEvents()
+    {
+        NetworkManager.Instance.Client.OnConnected += OnConnected;
+        NetworkManager.Instance.Client.OnDisconnected += OnDisconnected;
+    }
+
+    private void InitialiseClickMethods()
+    {
+        if (_connectButton != null)
+            _connectButton.onClick.AddListener(OnConnectClicked);
+
+        if (_disconnectButton != null)
+            _disconnectButton.onClick.AddListener(OnDisconnectClicked);
+    }
+
+    private void enableConnectStateUI()
+    {
+        _connectButton.gameObject.SetActive(false);
+        _disconnectButton.gameObject.SetActive(true);
+    }
+
+    private void enableDisConnectStateUI()
+    {
+        _connectButton.gameObject.SetActive(true);
+        _disconnectButton.gameObject.SetActive(false);
+    }
+
+    private void OnConnectClicked()
+    {
+        NetworkManager.Instance.Connect();
+        _connectButton.gameObject.SetActive(false);
+        SetState(connectionState.CONNECTING);
+    }
+
+    private void OnDisconnectClicked()
+    {
+        NetworkManager.Instance.DisconnectAndCleanup();
+        SetState(connectionState.DISCONNECTING);
+        _disconnectButton.gameObject.SetActive(false);
+    }
+
+    private void OnConnected()
+    {
+        SetState(connectionState.CONNECTED);
+        enableConnectStateUI();
+    }
+
+    private void OnDisconnected(string reason)
+    {
+        SetState(connectionState.DISCONNECTED);
+        enableDisConnectStateUI();
     }
 
     public void SetState(connectionState state)
@@ -57,6 +114,12 @@ public class ConnectionStatusHandler : MonoBehaviour
                     _connectionDot.color = _disConnectedColor;
                 if (_text != null)
                     _text.text = "Connecting..";
+                break;
+            case connectionState.DISCONNECTING:
+                if (_connectionDot != null)
+                    _connectionDot.color = _disConnectedColor;
+                if (_text != null)
+                    _text.text = "Disconnecting..";
                 break;
         }
     }

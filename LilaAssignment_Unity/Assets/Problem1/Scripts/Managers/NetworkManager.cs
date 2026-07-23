@@ -75,9 +75,12 @@ namespace TicTacToe
 
         public void DisconnectAndCleanup()
         {
-            if (_client.IsInRoom)
-                _client.LeaveRoom();
-            _client.Disconnect();
+            if(_client != null)
+            {
+                if (_client.IsInRoom)
+                    _client.LeaveRoom();
+                _client.Disconnect();
+            }
         }
 
         private void RegisterClientEvents()
@@ -161,17 +164,17 @@ namespace TicTacToe
             Debug.Log("[NetworkManager] Hiding reconnecting overlay");
         }
 
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            if (!hasFocus && _client.IsConnected)
-            {
-            }
-            else if (hasFocus && !_client.IsConnected && _wasConnectedBefore)
-            {
-                ShowReconnectingOverlay();
-                Connect();
-            }
-        }
+        // private void OnApplicationFocus(bool hasFocus)
+        // {
+        //     if (!hasFocus && _client.IsConnected)
+        //     {
+        //     }
+        //     else if (hasFocus && !_client.IsConnected && _wasConnectedBefore)
+        //     {
+        //         ShowReconnectingOverlay();
+        //         Connect();
+        //     }
+        // }
 
         private void OnApplicationQuit()
         {
