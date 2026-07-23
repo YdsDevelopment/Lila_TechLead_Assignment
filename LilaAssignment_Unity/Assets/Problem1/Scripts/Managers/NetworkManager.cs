@@ -20,11 +20,9 @@ namespace TicTacToe
             if (!string.IsNullOrEmpty(url))
                 _serverUrl = url;
         }
-        private string _playerId;
         private bool _wasConnectedBefore;
         private bool _reconnectOverlayShowing;
         private bool _wasInRoom;
-        private const string WAS_IN_ROOM_PREF_KEY = "was_in_room";
 
         private void Awake()
         {
@@ -34,8 +32,7 @@ namespace TicTacToe
 
             _ = UnityMainThreadDispatcher.Instance;
 
-            _playerId = GetOrCreatePlayerId();
-            _wasInRoom = PlayerPrefs.GetInt(WAS_IN_ROOM_PREF_KEY, 0) == 1;
+            _wasInRoom = PlayerIdentity.LoadWasInRoom();
             ISocketManager socketManager;
 #if UNITY_WEBGL && !UNITY_EDITOR
             socketManager = gameObject.AddComponent<WebGLSocketManager>();
@@ -52,30 +49,26 @@ namespace TicTacToe
 
         public string GetOrCreatePlayerId()
         {
-            string id = PlayerPrefs.GetString("playerId", "");
-            if (string.IsNullOrEmpty(id))
-            {
-                id = System.Guid.NewGuid().ToString();
-                PlayerPrefs.SetString("playerId", id);
-                PlayerPrefs.Save();
-            }
-            return id;
+            return PlayerIdentity.GetOrCreatePlayerId();
         }
 
         public string RegeratePlayerID()
         {
-            var id = System.Guid.NewGuid().ToString();
-            PlayerPrefs.SetString("playerId", id);
-            PlayerPrefs.Save();
-            _playerId = id;
-            Debug.Log("generate new Player Id " + _playerId);
-            return _playerId;
+            PlayerIdentity.RegeneratePlayerId();
+            var id = PlayerIdentity.GetOrCreatePlayerId();
+            Debug.Log("generate new Player Id " + id);
+            return id;
+        }
+
+        public string RegeneratePlayerID()
+        {
+            return RegeratePlayerID();
         }
 
         public void Connect()
         {
             Debug.LogError("NetworkManager Connect is Called");
-            _client.Connect(_serverUrl, _playerId);
+            _client.Connect(_serverUrl, PlayerIdentity.GetOrCreatePlayerId());
         }
 
         public void DisconnectAndCleanup()
@@ -92,8 +85,7 @@ namespace TicTacToe
         private void PersistInRoom(bool inRoom)
         {
             _wasInRoom = inRoom;
-            PlayerPrefs.SetInt(WAS_IN_ROOM_PREF_KEY, inRoom ? 1 : 0);
-            PlayerPrefs.Save();
+            PlayerIdentity.SaveWasInRoom(inRoom);
         }
 
         private void RegisterClientEvents()

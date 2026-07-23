@@ -203,7 +203,7 @@ namespace TicTacToe.UI
         {
             if (_roomListContent == null || _roomItemPrefab == null) return;
 
-            var incomingIds = rooms != null
+            var incomingIds = (rooms != null && rooms.Count > 0)
                 ? new HashSet<string>(rooms.Select(r => r.roomId))
                 : new HashSet<string>();
 
@@ -229,9 +229,6 @@ namespace TicTacToe.UI
                 else
                 {
                     var item = GetFromPool();
-                    Debug.LogError("Prefab Item: is Presnt : " + item == null);
-                    Debug.LogError("Prefab Item: is Presnt :  room : " + room == null);
-                    
                     item.Setup(room.roomId, room.playerCount);
                     item.transform.SetAsLastSibling();
                     _activeItems[room.roomId] = item;

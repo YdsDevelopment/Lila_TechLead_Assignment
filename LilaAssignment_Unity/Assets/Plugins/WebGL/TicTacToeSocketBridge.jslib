@@ -103,5 +103,21 @@ mergeInto(LibraryManager.library, {
   TTT_SocketIsConnected: function () {
     var bridge = window.TicTacToeWebGLSocketBridge;
     return bridge && bridge.socket && bridge.socket.connected ? 1 : 0;
+  },
+
+  TTT_SessionStorageGetItem: function (keyPointer) {
+    var key = UTF8ToString(keyPointer);
+    var value = sessionStorage.getItem(key);
+    if (value === null) return 0;
+    var bufferSize = lengthBytesUTF8(value) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(value, buffer, bufferSize);
+    return buffer;
+  },
+
+  TTT_SessionStorageSetItem: function (keyPointer, valuePointer) {
+    var key = UTF8ToString(keyPointer);
+    var value = UTF8ToString(valuePointer);
+    sessionStorage.setItem(key, value);
   }
 });
