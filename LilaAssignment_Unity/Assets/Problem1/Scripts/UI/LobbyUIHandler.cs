@@ -130,6 +130,11 @@ namespace TicTacToe.UI
                 NetworkManager.Instance.Client.OnRoomJoined += OnRoomJoinDetailsReceived;
                 NetworkManager.Instance.Client.OnError += OnNetworkError;
                 NetworkManager.Instance.Client.OnPlayerLeft += OnPlayerLeft;
+
+                if (NetworkManager.Instance.Client.IsConnected)
+                {
+                    StartPollingRooms();
+                }
             }
         }
 
