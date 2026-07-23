@@ -6,7 +6,7 @@ namespace TicTacToe.WeaponSystem
     {
         public string Name { get; protected set; }
         public WeaponType Type { get; protected set; }
-        public WeaponState State { get; protected set; }
+        public WeaponState State { get; internal set; }
         public FireMode Mode { get; protected set; }
 
         public int MagazineSize { get; protected set; }

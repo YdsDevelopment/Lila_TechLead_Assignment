@@ -12,7 +12,7 @@ namespace TicTacToe
         private TicTacToeSocketClient _client;
         public TicTacToeSocketClient Client => _client;
 
-        [SerializeField] private string _serverUrl = "http://localhost:3000";
+        [SerializeField] private string _serverUrl = "http://localhost:5000";
         public string ServerUrl => _serverUrl;
 
         public void SetServerUrl(string url)
