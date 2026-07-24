@@ -1,6 +1,6 @@
 using System;
 
-namespace TicTacToe.WeaponSystem
+namespace LilaTest.WeaponSystem
 {
     public class Weapon
     {

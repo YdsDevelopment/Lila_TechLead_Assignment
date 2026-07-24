@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TicTacToe.WeaponSystem
+namespace LilaTest.WeaponSystem
 {
     public sealed class WeaponHUD
     {

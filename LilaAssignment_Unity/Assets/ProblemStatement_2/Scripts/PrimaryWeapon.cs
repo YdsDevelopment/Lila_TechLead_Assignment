@@ -1,4 +1,4 @@
-namespace TicTacToe.WeaponSystem
+namespace LilaTest.WeaponSystem
 {
     public sealed class PrimaryWeapon : Weapon
     {

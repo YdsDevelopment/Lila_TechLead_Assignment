@@ -93,7 +93,6 @@ MonoBehaviour:
   _roomIDDisplay: {fileID: 3319983126454328417}
   _errorText: {fileID: 1337709388849987540}
   _createRoomButton: {fileID: 7890675050703274305}
-  _joinRoomButton: {fileID: 0}
   _reconnectToGameButton: {fileID: 4838734501497814887}
   _newPlayerIDButton: {fileID: 232862847397712714}
   _roomListScrollRect: {fileID: 0}
@@ -1742,7 +1741,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 585, y: 80}
+  m_CellSize: {x: 1000, y: 80}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
   m_ConstraintCount: 2

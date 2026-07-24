@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TicTacToe.WeaponSystem
+namespace LilaTest.WeaponSystem
 {
     public sealed class WeaponInputHandler : MonoBehaviour
     {
@@ -11,6 +11,8 @@ namespace TicTacToe.WeaponSystem
         [SerializeField] private int fireMouseButton = 0;
 
         private PlayerWeaponController _controller;
+
+        public PlayerWeaponController Controller => _controller;
 
         private void Awake()
         {

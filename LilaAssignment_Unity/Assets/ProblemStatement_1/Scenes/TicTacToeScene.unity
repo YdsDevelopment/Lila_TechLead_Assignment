@@ -1112,6 +1112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LobbyPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 1028686117465289525, guid: 4131421e46c584d5e9251b28084c3268, type: 3}
+      propertyPath: m_ConstraintCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5031734451426329279, guid: 4131421e46c584d5e9251b28084c3268, type: 3}
       propertyPath: m_Color.a
       value: 1
