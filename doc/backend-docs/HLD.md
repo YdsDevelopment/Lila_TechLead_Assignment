@@ -468,7 +468,7 @@ Read-only; gameplay uses Socket.IO.
 
 | Env Variable | Default | Description |
 |---|---|---|
-| `PORT` | `3000` | HTTP server port |
+| `PORT` | `5000` | HTTP server port |
 | `CLIENT_URL` | `http://localhost:5173` | CORS allowed origin |
 | `TURN_TIMEOUT` | `30000` | Turn timeout in ms |
 | `TURN_TIMEOUT_ENABLED` | `true` | Enable/disable turn timer |
@@ -483,7 +483,7 @@ Read-only; gameplay uses Socket.IO.
 docker compose up --build
 ```
 
-Builds a two-stage Docker image (builder + runner), exposes port 3000, loads `.env`.
+Builds a two-stage Docker image (builder + runner), exposes port 5000, loads `.env`.
 
 ### Development
 
